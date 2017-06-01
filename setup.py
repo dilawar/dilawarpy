@@ -20,7 +20,7 @@ classifiers = [
 setup(
     name = "ajgar",
     version = "0.0.1",
-    description = "Helper scripts in python. See the README.md file."
+    description = "Helper scripts in python. See the README.md file.",
     long_description = readme,
     packages = [ ],
     package_data = {},
