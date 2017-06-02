@@ -13,3 +13,4 @@ __status__           = "Development"
 
 from data_analysis import *
 from text_processing import *
+from file_utils import *
