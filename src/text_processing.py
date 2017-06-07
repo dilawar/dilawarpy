@@ -17,7 +17,7 @@ import re
 
 float_regex = re.compile( r'[-+]?(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?' )
 
-def find_all_float( x ):
+def find_all_floats( x ):
     """Find all floats in given string
     """
     return float_regex.findall( x )
