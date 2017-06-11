@@ -15,9 +15,19 @@ __status__           = "Development"
 
 import re
 
-float_regex = re.compile( r'[-+]?(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?' )
+float_regex_ = re.compile( r'[-+]?(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?' )
 
-def find_all_floats( x ):
+def to_float( token ):
+    val = token
+    try:
+        val = float( token )
+    except Exception as e:
+        pass
+    return val
+
+def find_all_floats( text ):
     """Find all floats in given string
     """
-    return float_regex.findall( x )
+    global float_regex_
+    assert type( text ) == str
+    return [ to_float( m.group(0) ) for m  in float_regex_.finditer( text ) ]

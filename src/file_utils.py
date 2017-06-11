@@ -11,6 +11,7 @@ __status__           = "Development"
 
 import sys
 import os
+import subprocess
 
 
 def tail(f, n, offset=0):
