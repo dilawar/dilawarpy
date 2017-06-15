@@ -16,7 +16,6 @@ __status__           = "Development"
 
 import sys
 import os
-import pandas as pd
 import scipy.signal  as _sig
 
 def smooth( sig, N = 100 ):
@@ -44,6 +43,8 @@ def compute_transitions( vec, levels, thres = 4 ):
     return result, sig
 
 def test( datafile ):
+    import matplotlib.pyplot as plt
+    import pandas as pd
     data = pd.read_csv( datafile, sep = ' ', comment = '#' )
     data.dropna( how = 'any' )
     camkii = data.filter( regex = r'x0y\d.+' )

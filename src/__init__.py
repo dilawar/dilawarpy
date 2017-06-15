@@ -11,6 +11,6 @@ __maintainer__       = "Dilawar Singh"
 __email__            = "dilawars@ncbs.res.in"
 __status__           = "Development"
 
-from data_analysis import *
-from text_processing import *
-from file_utils import *
+from ajgar.data_analysis import *
+from ajgar.text_processing import *
+from ajgar.file_utils import *
