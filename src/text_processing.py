@@ -25,6 +25,9 @@ def to_float( token ):
         pass
     return val
 
+def remove_special_char( txt ):
+    return re.sub( r'_|\+|\-|\%', ' ', txt )
+
 def find_all_floats( text ):
     """Find all floats in given string
     """
@@ -39,7 +42,7 @@ def arrays2csv( outfile, **kwargs ):
     The argument order will be preserved if python-3.6+ is used. Not
     implementing the order preservation here.
     """
-    header = kwargs.keys( )
+    header = map( remove_special_char, kwargs.keys( ) 
     sep = ','
     with open( outfile, 'w' ) as f:
         f.write( sep.join( header ) + '\n' )
