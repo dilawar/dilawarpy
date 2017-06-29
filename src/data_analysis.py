@@ -16,6 +16,7 @@ __status__           = "Development"
 
 import sys
 import os
+import numpy as np
 import scipy.signal  as _sig
 
 def smooth( sig, N = 100 ):
