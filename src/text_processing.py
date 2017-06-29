@@ -42,7 +42,7 @@ def arrays2csv( outfile, **kwargs ):
     The argument order will be preserved if python-3.6+ is used. Not
     implementing the order preservation here.
     """
-    header = map( remove_special_char, kwargs.keys( ) 
+    header = map( remove_special_char, kwargs.keys( ) )
     sep = ','
     with open( outfile, 'w' ) as f:
         f.write( sep.join( header ) + '\n' )
