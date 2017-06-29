@@ -50,3 +50,8 @@ def arrays2csv( outfile, **kwargs ):
         for x in zip( *cols ):
             x = map( str, x )
             f.write( sep.join( x ) + '\n' )
+
+
+# deperecated
+def find_all_floats( txt ):
+    return find_floats( txt )
