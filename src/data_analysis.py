@@ -17,6 +17,7 @@ __status__           = "Development"
 import sys
 import os
 import numpy as np
+from collections import defaultdict
 import scipy.signal  as _sig
 
 def smooth( sig, N = 100 ):
@@ -31,10 +32,10 @@ def digitize( sig, levels, thres = 4 ):
 
 def find_transitions( vec, levels, thres = 4 ):
     sig = digitize( vec, levels, thres )
-    result = { }
+    result = defaultdict( list )
     for x in levels:
         xIds = np.where( vec ==  x )[0]
-        result[ 'kramer_%s' % x ] = len( xIds ) / 1.0 / len( vec )
+        result[ 'kramer_time' ].append( (x, len( xIds ) / 1.0 / len( vec )) )
 
     trans = np.diff( sig ) 
 
