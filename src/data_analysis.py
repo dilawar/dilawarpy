@@ -18,9 +18,6 @@ import sys
 import os
 import scipy.signal  as _sig
 
-# Alias
-compute_transitions = find_transitions
-
 def smooth( sig, N = 100 ):
     window = np.ones( N ) / float( N )
     return np.convolve(  sig, window, 'same' )
@@ -73,6 +70,9 @@ def test( datafile ):
 def main( ):
     datafile = sys.argv[1]
     test(datafile)
+
+# Alias. Deprecated
+compute_transitions = find_transitions
 
 if __name__ == '__main__':
     main()
