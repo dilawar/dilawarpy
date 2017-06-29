@@ -28,7 +28,7 @@ def to_float( token ):
 def remove_special_char( txt ):
     return re.sub( r'_|\+|\-|\%', ' ', txt )
 
-def find_all_floats( text ):
+def find_floats( text ):
     """Find all floats in given string
     """
     global float_regex_
