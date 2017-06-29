@@ -52,6 +52,6 @@ def arrays2csv( outfile, **kwargs ):
             f.write( sep.join( x ) + '\n' )
 
 
-# deperecated
+# deprecated
 def find_all_floats( txt ):
     return find_floats( txt )

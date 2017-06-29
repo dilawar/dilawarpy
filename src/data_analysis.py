@@ -18,6 +18,9 @@ import sys
 import os
 import scipy.signal  as _sig
 
+# Alias
+compute_transitions = find_transitions
+
 def smooth( sig, N = 100 ):
     window = np.ones( N ) / float( N )
     return np.convolve(  sig, window, 'same' )
@@ -28,7 +31,7 @@ def digitize( sig, levels, thres = 4 ):
     sig[ np.isnan( sig ) ] = 0
     return sig 
 
-def compute_transitions( vec, levels, thres = 4 ):
+def find_transitions( vec, levels, thres = 4 ):
     sig = digitize( vec, levels, thres )
     result = { }
     for x in levels:
@@ -51,7 +54,7 @@ def test( datafile ):
     tvec = data[ 'time' ]
     lowCaMKII = np.sum( camkii, axis = 1 )
     sig = smooth( lowCaMKII, 500 )
-    res, newY = compute_transitions( sig, [0,8,16] )
+    res, newY = find_transitions( sig, [0,8,16] )
     print( res )
     upT = tvec[ res[ 'up_transitions' ] ]
     downT = tvec[ res[ 'down_transitions' ] ]
