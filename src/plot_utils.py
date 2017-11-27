@@ -3,6 +3,8 @@
 import os
 import shutil as sh
 import numpy as np
+import subprocess
+import re
 
 def _read_line(filename, line_number):
     s = None
@@ -38,13 +40,14 @@ class _GnuplotDataZMatrixTemp(_GnuplotDeletingFile):
         with open(self.name, 'wb') as fs:
             np.savetxt(fs, z_matrix, '%.3f', delimiter=',')
 
-def gnuplot(script_name, args_dict={}, data=[]):
+#def gnuplot( script, args_dict={}, data=[]):
+def gnuplot( script, **kwargs ):
     '''
     Call a Gnuplot script, passing it arguments and
     datasets.
 
     Args:
-        scipt_name(str): The name of the Gnuplot script.
+        script(str): The name of the Gnuplot script or the text
         args_dict(dict): A dictionary of parameters to pass
             to the script.  The `key` is the name of the variable
             that the `item` will be passed to the Gnuplot script
@@ -58,38 +61,29 @@ def gnuplot(script_name, args_dict={}, data=[]):
         str: The Gnuplot command used to call the script.
     '''
 
-    gnuplot_command = 'gnuplot'
+    if os.path.exists( script ):
+        with open( script ) as f:
+            script = f.read( )
 
-    if data:
-        assert 'data' not in args_dict, \
-            'Can\'t use \'data\' variable twice.'
-        data_temp = _GnuplotDataTemp(*data)
-        args_dict['data'] = data_temp.name
+    for k in kwargs:
+        v = kwargs[k]
+        script = script.replace( '@%s@' % k, v )
 
-    if args_dict:
-        gnuplot_command += ' -e "'
-        for arg in args_dict.items():
-            gnuplot_command += arg[0] + '='
-            if isinstance(arg[1], str):
-                gnuplot_command += '\'' + arg[1] + '\''
-            elif isinstance(arg[1], bool):
-                if arg[1] is True:
-                    gnuplot_command += '1'
-                else:
-                    gnuplot_command += '0'
-            elif hasattr(arg[1], '__iter__'):
-                gnuplot_command += '\'' + ' '.join([str(v) for v in arg[1]]) + '\''
-            else:
-                gnuplot_command += str(arg[1])
-            gnuplot_command += '; '
-        gnuplot_command  = gnuplot_command[:-1]
-        gnuplot_command += '"'
+    # Find rest of the macros.
+    for m in re.findall( r'@\S+?@', script ):
+        script = script.replace( m, kwargs.get( m.replace( '@',''), '' ) ) 
 
-    gnuplot_command += ' ' + script_name
+    # if first argument is a long string then save the string to current
+    # directory before running the command.
+    script_name = '/tmp/gnuplot_script.gpi'
+    with open( script_name, 'w' ) as f:
+        f.write( script )
 
-    os.system(gnuplot_command)
+    gnuplot_command = 'gnuplot ' + script_name
 
-    return gnuplot_command
+    # Don't wait.
+    subprocess.Popen( gnuplot_command.split( ) )
+    return True
 
 def gnuplot_2d(x, y, filename, title='', x_label='', y_label=''):
     _, ext = os.path.splitext(filename)
@@ -106,11 +100,10 @@ def gnuplot_2d(x, y, filename, title='', x_label='', y_label=''):
     set border lw 1.5
     set grid lt -1 lc rgb "gray80"
 
-    set title title
-    set xlabel x_label
-    set ylabel y_label
-
-    plot filename_data u 1:2 w lp pt 6 ps 0.5
+    set title "title"
+    set xlabel "x_label"
+    set ylabel "y_label"
+    plot "filename" u 1:2 w lp pt 6 ps 0.5
     '''
     scr = _GnuplotScriptTemp(gnuplot_cmds)
     data = _GnuplotDataTemp(x, y)
@@ -205,5 +198,5 @@ def trim_pad_image(filename, padding=20):
     '''
     import subprocess
     cmd = 'convert %s -trim -bordercolor white -border %i %s' % \
-            (filename, padding, filename))
+            (filename, padding, filename)
     subprocess.call( cmd.split( ), shell = True )

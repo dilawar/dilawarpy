@@ -1,6 +1,7 @@
 """ajgar.py: Main module.
 
 """
+from __future__ import print_function, division
     
 __author__           = "Dilawar Singh"
 __copyright__        = "Copyright 2016, Dilawar Singh"
@@ -11,7 +12,12 @@ __maintainer__       = "Dilawar Singh"
 __email__            = "dilawars@ncbs.res.in"
 __status__           = "Development"
 
-from ajgar.data_analysis import *
-from ajgar.text_processing import *
-from ajgar.file_utils import *
-from ajar.plot_utils import gnuplot 
+try:
+    # This depends on scipy
+    from .data_analysis import *
+except ImportError as e:
+    pass
+
+from .text_processing import *
+from .file_utils import *
+from .plot_utils import gnuplot 
