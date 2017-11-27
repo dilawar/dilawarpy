@@ -1,6 +1,7 @@
 # This file is originall from https://github.com/jtambasco/gnuplotpy
 
 import os
+import time
 import shutil as sh
 import numpy as np
 import subprocess
@@ -79,5 +80,12 @@ def gnuplot( script, **kwargs ):
     script = script.replace( r'"', r"'" ).replace( ';', '' )
     script = ';'.join( filter(None, script.split( '\n' )) );
     script += ';exit;'
-    subprocess.Popen( [ 'gnuplot', '-e', '"%s"' % script ], shell = True )
+    scriptName = '.gnuplot_script'
+    with open( scriptName, 'w' ) as f:
+        f.write( script )
+
+    while not os.path.isfile( scriptName ):
+        time.sleep( 0.0001 )
+
+    subprocess.Popen( [ 'gnuplot', scriptName ] )
     return True
