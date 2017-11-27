@@ -14,3 +14,4 @@ __status__           = "Development"
 from ajgar.data_analysis import *
 from ajgar.text_processing import *
 from ajgar.file_utils import *
+from ajar.plot_utils import gnuplot 
