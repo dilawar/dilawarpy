@@ -21,3 +21,4 @@ except ImportError as e:
 from .text_processing import *
 from .file_utils import *
 from .plot_utils import gnuplot 
+from .statistics import histogram
