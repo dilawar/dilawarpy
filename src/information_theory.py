@@ -20,7 +20,7 @@ def entropy( P ):
         assert p >= 0, 'All values must be positive'
         if p == 0:
             continue
-        h += p * math.log( p, 2 )
+        h -= p * math.log( p, 2 )
     return h
 
 
@@ -30,5 +30,5 @@ def kl_distance( P, Q ):
         assert q > 0, 'Q must not have zero entry'
         if p == 0:
             continue 
-        dist += p  * math.log( p/q, 2 )
+        dist += (p  * math.log( p/q, 2 ))
     return dist
