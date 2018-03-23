@@ -16,6 +16,7 @@ __status__           = "Development"
 
 import sys
 import os
+import math
 import numpy as np
 from collections import defaultdict
 import scipy.signal  as _sig
@@ -40,7 +41,7 @@ def is_periodic_helper( vec ):
     while sum(tps) > 1:
         x0 = tps[np.nonzero(tps)][0]
         ts = [ i for i, x in enumerate(tps) if isclose(x,x0,max(3,0.1*x0)) ]
-        if not ts:
+        if len(ts) < 2:
             continue
         res.append( (x0, np.mean(np.diff(ts))) )
         tps[ts] = 0
@@ -71,7 +72,6 @@ def find_period( vec, polar = False, ax = None):
         return False
 
     if ax is not None:
-        ax.plot( phase ) #, color = 'blue' )
         ax.plot( dist ) #, color = 'red' )
 
     zeroCross = change_sign( phase )
@@ -83,7 +83,7 @@ def find_period( vec, polar = False, ax = None):
         return False
 
     zeroCross, valsAtZero = zip(*goodPoints)
-    if len(zeroCross) < 2:
+    if len(zeroCross) == 0:
         return 0
 
     timePeriod = np.diff( zeroCross )
