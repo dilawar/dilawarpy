@@ -20,6 +20,64 @@ import numpy as np
 from collections import defaultdict
 import scipy.signal  as _sig
 
+def is_periodic_helper( vec ):
+    # List of timeperiods. It may contain 1 timeperiod of multiple timeperid.
+    # Essentially we are looking of repeating substring.
+    tps = vec.copy( )
+    res = [ ]
+    while sum(tps) > 1:
+        x0 = tps[np.nonzero(tps)][0]
+        ts = [ i for i, x in enumerate(tps) if isclose(x,x0,max(3,0.1*x0)) ]
+        if not ts:
+            continue
+        res.append( (x0, np.mean(np.diff(ts))) )
+        tps[ts] = 0
+
+    periods, periodicity = zip( *res )
+    if min(periodicity) == max(periodicity):
+        return np.sum( periods )
+    return 0
+
+def find_period( vec, polar = False, ax = None):
+    # normalize the vector
+    if polar:
+        vec[:,0] = vec[:,0] % (2*np.pi) 
+    ref = vec[-1]
+    dist = np.zeros( len(vec) )
+    phase = np.zeros( len(vec) )
+    periods = [ ]
+    prevI = 0
+    for i, v in enumerate(vec[::-1]):
+        dist[i] = sum( (v - ref) ** 2) ** 0.5
+        phase[i] = math.atan(v[1]/v[0]) - math.atan(ref[1] / ref[0])
+
+    # normalize distance.
+    if dist.max( ) == dist.min():
+        return False
+
+    if phase.max() == phase.min():
+        return False
+
+    if ax is not None:
+        ax.plot( phase ) #, color = 'blue' )
+        ax.plot( dist ) #, color = 'red' )
+
+    zeroCross = change_sign( phase )
+    valsAtZero = dist[zeroCross]
+
+    # remove zero-crossings where distance is not close to zero.
+    goodPoints = [ x for x in zip(zeroCross, valsAtZero) if not isclose(x[1],0) ]
+    if len( goodPoints) < 1:
+        return False
+
+    zeroCross, valsAtZero = zip(*goodPoints)
+    if len(zeroCross) < 2:
+        return 0
+
+    timePeriod = np.diff( zeroCross )
+    return is_periodic_helper( timePeriod )
+
+
 def smooth( sig, N = 100 ):
     window = np.ones( N ) / float( N )
     return np.convolve(  sig, window, 'same' )
