@@ -20,6 +20,18 @@ import numpy as np
 from collections import defaultdict
 import scipy.signal  as _sig
 
+def change_sign( vec ):
+    # use np.signbit instead of np.sign
+    # this is not the best way to compute the zero-crossing. 
+    #
+    # For b = [ 1, 2, 0, -1, 0, 0, -1, 2], it returns 3 crossing though there
+    # are only 2.
+    idx = np.signbit( vec ) != np.signbit( np.roll(vec, 1))
+    return np.where( idx )[0][1:]
+
+def isclose( v1, v2, eabs = 1e-3 ):
+    return abs( v1 - v2 ) < eabs
+
 def is_periodic_helper( vec ):
     # List of timeperiods. It may contain 1 timeperiod of multiple timeperid.
     # Essentially we are looking of repeating substring.
