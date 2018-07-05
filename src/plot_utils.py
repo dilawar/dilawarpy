@@ -6,6 +6,7 @@ import shutil as sh
 import numpy as np
 import subprocess
 import re
+import tempfile
 
 def _read_line(filename, line_number):
     s = None
@@ -89,3 +90,9 @@ def gnuplot( script, **kwargs ):
 
     subprocess.Popen( [ 'gnuplot', scriptName ] )
     return True
+
+def nx_draw( graph ):
+    from networkx.drawing.nx_agraph import write_dot
+    fh, dotfile = tempfile.mkstemp( )
+    write_dot( graph, dotfile )
+    print( "[INFO ] Wrote to %s" % dotfile )
