@@ -91,8 +91,12 @@ def gnuplot( script, **kwargs ):
     subprocess.Popen( [ 'gnuplot', scriptName ] )
     return True
 
-def nx_draw( graph ):
+def nx_draw( graph, ax = None ):
     from networkx.drawing.nx_agraph import write_dot
     fh, dotfile = tempfile.mkstemp( )
+    pngfile = '%s.png' % dotfile
     write_dot( graph, dotfile )
-    print( "[INFO ] Wrote to %s" % dotfile )
+    if ax is not None:
+        subprocess.call(["dot",  "-Tpng",  dotfile, "-o", pngfile] )
+        if os.file.exists( pngfile ):
+            ax.figimage( pngfile )
