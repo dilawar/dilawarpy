@@ -110,3 +110,38 @@ def nx_draw( graph, program = 'neato', ax = None ):
             ax.imshow( im, interpolation = 'none' )
         else:
             logging.warn( 'Failed to draw graph using %s' % program)
+
+def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
+    import matplotlib.pyplot as plt
+    if ax is None:
+        ax = plt.subplot( 111 )
+
+    img = np.matrix( img )
+    nc, nr = img.shape
+    im = ax.imshow( img, interpolation = 'none', aspect = 'auto' )
+
+    # apply ticks and labels
+    xticks = kwargs.get( 'xticks', [] )
+    yticks = kwargs.get( 'yticks', [] )
+    if not xticks:
+        nticks = kwargs.get( 'num_xticks', kwargs.get( 'num_ticks', 5) )
+        xticks = [(i, xvec[int(i)]) for i in np.linspace(0, len(xvec)-1, nticks)]
+
+    xpos, xlabels = zip(*xticks)
+    ax.set_xticks(xpos)
+    ax.set_xticklabels( [ r'%s' % x for x in xlabels] )
+
+    if not yticks:
+        nticks = kwargs.get( 'num_yticks', kwargs.get( 'num_ticks', 5) )
+        yticks = [(i, yvec[int(i)]) for i in np.linspace(0, len(yvec)-1, nticks)]
+
+    ypos, ylabels = zip(*yticks)
+    ax.set_yticks(ypos)
+    ax.set_yticklabels( [ r'%s' % y for y in ylabels] )
+
+
+    if kwargs.get( 'colorbar', True):
+        plt.colorbar( im, ax = ax )
+    return im
+
+
