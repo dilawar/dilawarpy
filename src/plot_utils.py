@@ -118,7 +118,11 @@ def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
 
     img = np.matrix( img )
     nc, nr = img.shape
-    im = ax.imshow( img, interpolation = 'none', aspect = 'auto' )
+    im = ax.imshow( img
+            , interpolation = kwargs.get( 'interpolation', 'none')
+            , aspect = kwargs.get( 'aspect', 'auto' ) 
+            , cmap = kwargs.get( 'cmap', 'virdis' )
+            )
 
     # apply ticks and labels
     xticks = kwargs.get( 'xticks', [] )
