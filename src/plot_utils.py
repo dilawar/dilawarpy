@@ -139,6 +139,9 @@ def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
     ax.set_yticks(ypos)
     ax.set_yticklabels( [ r'%s' % y for y in ylabels] )
 
+    ax.set_xlabel( kwargs.get( 'xlabel', 'NA' ) )
+    ax.set_ylabel( kwargs.get( 'ylabel', 'NA' ) )
+
 
     if kwargs.get( 'colorbar', True):
         plt.colorbar( im, ax = ax )
