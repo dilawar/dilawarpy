@@ -7,6 +7,7 @@ import numpy as np
 import subprocess
 import re
 import tempfile
+import logging
 
 def _read_line(filename, line_number):
     s = None
@@ -91,12 +92,21 @@ def gnuplot( script, **kwargs ):
     subprocess.Popen( [ 'gnuplot', scriptName ] )
     return True
 
-def nx_draw( graph, ax = None ):
+def nx_draw( graph, program = 'neato', ax = None ):
+    """Draw to PNG using graphviz (default = neato).
+    """
     from networkx.drawing.nx_agraph import write_dot
+    import matplotlib.image as mpimg
+    import matplotlib.pyplot as plt
+
     fh, dotfile = tempfile.mkstemp( )
     pngfile = '%s.png' % dotfile
     write_dot( graph, dotfile )
+    logging.info( 'Wrote network to %s' % dotfile)
     if ax is not None:
-        subprocess.call(["dot",  "-Tpng",  dotfile, "-o", pngfile] )
-        if os.file.exists( pngfile ):
-            ax.figimage( pngfile )
+        subprocess.check_output([ program,  "-Tpng",  dotfile, "-o", pngfile], shell=False)
+        if os.path.exists( pngfile ):
+            im = mpimg.imread( pngfile )
+            ax.imshow( im, interpolation = 'none' )
+        else:
+            logging.warn( 'Failed to draw graph using %s' % program)
