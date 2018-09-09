@@ -28,7 +28,6 @@ def histogram( vec, bins = 10, normed = False ):
 
     return hist, buckets
 
-
 def test( ):
     import numpy as np
     data = np.random.random( 100 ) * 100

@@ -95,9 +95,9 @@ def gnuplot( script, **kwargs ):
 def nx_draw( graph, program = 'neato', ax = None ):
     """Draw to PNG using graphviz (default = neato).
     """
-    from networkx.drawing.nx_agraph import write_dot
     import matplotlib.image as mpimg
     import matplotlib.pyplot as plt
+    from networkx.drawing.nx_pydot import write_dot
 
     fh, dotfile = tempfile.mkstemp( )
     pngfile = '%s.png' % dotfile
