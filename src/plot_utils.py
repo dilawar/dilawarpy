@@ -121,7 +121,7 @@ def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
     im = ax.imshow( img
             , interpolation = kwargs.get( 'interpolation', 'none')
             , aspect = kwargs.get( 'aspect', 'auto' ) 
-            , cmap = kwargs.get( 'cmap', 'virdis' )
+            , cmap = kwargs.get( 'cmap', 'viridis' )
             )
 
     # apply ticks and labels
