@@ -15,19 +15,18 @@ import sys
 import os
 import logging
 
-def init_logger( filename = None, level = 'info'):
-    logging.basicConfig(
-            level=logging.DEBUG,
+def init_logger( filename = '_log.txt', name='root', level = 'info'):
+    logging.basicConfig( level=logging.DEBUG,
             format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
             datefmt='%m-%d %H:%M',
-            filename= filename
+            filename= filename,
             filemode='a'
             )
     console = logging.StreamHandler()
     console.setLevel( eval('logging.%s'%level.upper() ))
     formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
     console.setFormatter(formatter)
-    logger = logging.getLogger('')
+    logger = logging.getLogger(root)
     logger.addHandler(console)
     return logger
 
