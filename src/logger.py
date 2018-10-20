@@ -26,8 +26,15 @@ def init_logger( filename = '_log.txt', name='root', level = 'info'):
     console.setLevel( eval('logging.%s'%level.upper() ))
     formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
     console.setFormatter(formatter)
-    logger = logging.getLogger(root)
+    logger = logging.getLogger(name)
     logger.addHandler(console)
     return logger
 
 logger = init_logger()
+
+def main():
+    logger.info( 'hey wassup?' )
+    logger.debug( 'Nothing much. Few bits!' )
+
+if __name__ == '__main__':
+    main()
