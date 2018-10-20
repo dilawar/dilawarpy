@@ -97,7 +97,7 @@ def nx_draw( graph, program = 'neato', ax = None ):
     """
     import matplotlib.image as mpimg
     import matplotlib.pyplot as plt
-    from networkx.drawing.nx_pydot import write_dot
+    from networkx.drawing.nx_agraph import write_dot
 
     fh, dotfile = tempfile.mkstemp( )
     pngfile = '%s.png' % dotfile
