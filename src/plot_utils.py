@@ -101,14 +101,13 @@ def nx_draw( graph, program = 'neato', ax = None ):
     fh, dotfile = tempfile.mkstemp( )
     pngfile = '%s.png' % dotfile
     write_dot( graph, dotfile )
-    _l.info( 'Wrote network to %s' % dotfile)
     if ax is not None:
         subprocess.check_output([ program,  "-Tpng",  dotfile, "-o", pngfile], shell=False)
         if os.path.exists( pngfile ):
             im = mpimg.imread( pngfile )
             ax.imshow( im, interpolation = 'none' )
         else:
-            _l.warn( 'Failed to draw graph using %s' % program)
+            raise UserWarning( 'Failed to draw graph using %s' % program)
 
 def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
     import matplotlib.pyplot as plt
