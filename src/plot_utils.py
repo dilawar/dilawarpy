@@ -204,10 +204,11 @@ def init_pgfplots( ):
 
 def pgfplots( x, y, ax, df=None, **kwargs):
     """Plot normal x-y curve like with pdfplots like settings.
-    Also put valus into a dataframe and return it so it can be saved into a csv
-    file.
+    Also put valus into a dataframe and return it so it can be saved into 
+    a csv file.
     """
     init_pgfplots()
+
     import pandas
     if df is None:
         df = pandas.DataFrame()
