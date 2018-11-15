@@ -8,6 +8,8 @@ import subprocess
 import re
 import tempfile
 
+init_pgfplots_ = False
+
 def _read_line(filename, line_number):
     s = None
     with open(filename, 'r') as fs:
@@ -149,4 +151,78 @@ def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
         plt.colorbar( im, ax = ax )
     return im
 
+def init_pgfplots( ):
+    global init_pgfplots_
+    if init_pgfplots_:
+        return 
+    import matplotlib as mpl
+    # Set matplotlib parameters to make it look like pgfplots
+    mpl.use('pgf')
+    import matplotlib.pyplot as plt
+    mpl.style.use( 'classic' )
+    mpl.rcParams['text.latex.preamble'] = [
+            r'\usepackage{siunitx},\usepackage{libertine}' 
+            ]
+    mpl.rcParams['text.usetex'] = True
+    mpl.rcParams[ 'text.latex.unicode' ] = True
 
+    # The following settings allow you to select the fonts in math mode.
+    mpl.rcParams['mathtext.fontset'] = 'stixsans'
+    mpl.rcParams['mathtext.default'] = 'regular'
+    ### AXES
+    mpl.rcParams['axes.labelsize'] =  'small'
+    mpl.rcParams['axes.formatter.use_mathtext'] = True
+    mpl.rcParams['axes.formatter.min_exponent'] = 0
+    mpl.rcParams['axes.formatter.useoffset'] = True  
+    mpl.rcParams['axes.formatter.offset_threshold'] = 4  
+
+    mpl.rcParams['axes.spines.left'] = True 
+    mpl.rcParams['axes.spines.bottom'] = True
+    mpl.rcParams['axes.spines.top'] = False
+    mpl.rcParams['axes.spines.right'] = False
+
+    mpl.rcParams['axes.unicode_minus'] = True 
+    mpl.rcParams['axes.autolimit_mode'] = data 
+    mpl.rcParams['axes.xmargin' ] = 0.1 
+    mpl.rcParams['axes.ymargin' ] = 0.1 
+
+    # TICKS
+    # see http://matplotlib.org/api/axis_api.html#matplotlib.axis.Tick
+    mpl.rcParams['xtick.labelsize'] = 'small'
+    mpl.rcParams['xtick.direction'] = 'inout' 
+    mpl.rcParams['ytick.labelsize'] = 'small' 
+    mpl.rcParams['ytick.direction'] = 'inout'
+
+    # Legend
+    mpl.rcParams['legend.loc']         = 'best'
+    mpl.rcParams['legend.frameon']     = False     # if True, draw the legend on a background patch
+    mpl.rcParams['legend.framealpha']  = 0         # legend patch transparency
+    mpl.rcParams['legend.fancybox']    = True      # if True, use a rounded box for the
+    mpl.rcParams['legend.fontsize']    = 'small'
+    mpl.rcParams['legend.borderpad']   = 0
+    init_pgfplots_ = True
+
+def pgfplots( x, y, ax, df=None, **kwargs):
+    """Plot normal x-y curve like with pdfplots like settings.
+    Also put valus into a dataframe and return it so it can be saved into a csv
+    file.
+    """
+    init_pgfplots()
+    import pandas
+    if df is None:
+        df = pandas.DataFrame()
+
+    ax.plot( x, y, **kwargs)
+    if kwargs.get('label', ''):
+        ax.legend()
+
+    if kwargs.get('xlabel', ''):
+        ax.set_xlabel( kwargs['xlabel'] )
+        df[kwargs['xlabel']] =  x
+    if kwargs.get('ylabel', ''):
+        ax.set_ylabel( kwargs['ylabel'] )
+        df[kwargs['ylabel']] =  y
+    if kwargs.get('title', '' ):
+        ax.set_title( kwargs.get('title', '' ) )
+
+    return df
