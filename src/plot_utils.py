@@ -8,6 +8,9 @@ import subprocess
 import re
 import tempfile
 
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+
 init_pgfplots_ = False
 
 def _read_line(filename, line_number):
@@ -97,9 +100,7 @@ def nx_draw( graph, program = 'neato', ax = None ):
     """Draw to PNG using graphviz (default = neato).
     """
     import matplotlib.image as mpimg
-    import matplotlib.pyplot as plt
     from networkx.drawing.nx_agraph import write_dot
-
     fh, dotfile = tempfile.mkstemp( )
     pngfile = '%s.png' % dotfile
     write_dot( graph, dotfile )
@@ -112,7 +113,6 @@ def nx_draw( graph, program = 'neato', ax = None ):
             raise UserWarning( 'Failed to draw graph using %s' % program)
 
 def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
-    import matplotlib.pyplot as plt
     if ax is None:
         ax = plt.subplot( 111 )
 
@@ -146,7 +146,6 @@ def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
     ax.set_xlabel( kwargs.get( 'xlabel', 'NA' ) )
     ax.set_ylabel( kwargs.get( 'ylabel', 'NA' ) )
 
-
     if kwargs.get( 'colorbar', True):
         plt.colorbar( im, ax = ax )
     return im
@@ -155,22 +154,17 @@ def init_pgfplots( ):
     global init_pgfplots_
     if init_pgfplots_:
         return 
-    import matplotlib as mpl
-    # Set matplotlib parameters to make it look like pgfplots
-    mpl.use('pgf')
-    import matplotlib.pyplot as plt
-    mpl.style.use( 'classic' )
     mpl.rcParams['text.latex.preamble'] = [
-            r'\usepackage{siunitx},\usepackage{libertine}' 
+            r'\usepackage{libertine}' 
+            , r'\usepackage{mathpazo}'
             ]
     mpl.rcParams['text.usetex'] = True
-    mpl.rcParams[ 'text.latex.unicode' ] = True
 
     # The following settings allow you to select the fonts in math mode.
     mpl.rcParams['mathtext.fontset'] = 'stixsans'
     mpl.rcParams['mathtext.default'] = 'regular'
-    ### AXES
-    mpl.rcParams['axes.labelsize'] =  'small'
+    # AXES
+    mpl.rcParams['axes.labelsize'] =  'x-small'
     mpl.rcParams['axes.formatter.use_mathtext'] = True
     mpl.rcParams['axes.formatter.min_exponent'] = 0
     mpl.rcParams['axes.formatter.useoffset'] = True  
@@ -181,8 +175,7 @@ def init_pgfplots( ):
     mpl.rcParams['axes.spines.top'] = False
     mpl.rcParams['axes.spines.right'] = False
 
-    mpl.rcParams['axes.unicode_minus'] = True 
-    mpl.rcParams['axes.autolimit_mode'] = data 
+    mpl.rcParams['axes.autolimit_mode'] = 'data' 
     mpl.rcParams['axes.xmargin' ] = 0.1 
     mpl.rcParams['axes.ymargin' ] = 0.1 
 
@@ -195,35 +188,43 @@ def init_pgfplots( ):
 
     # Legend
     mpl.rcParams['legend.loc']         = 'best'
-    mpl.rcParams['legend.frameon']     = False     # if True, draw the legend on a background patch
-    mpl.rcParams['legend.framealpha']  = 0         # legend patch transparency
-    mpl.rcParams['legend.fancybox']    = True      # if True, use a rounded box for the
+    mpl.rcParams['legend.frameon']     = False  
+    mpl.rcParams['legend.framealpha']  = 0     
+    mpl.rcParams['legend.fancybox']    = True 
     mpl.rcParams['legend.fontsize']    = 'small'
     mpl.rcParams['legend.borderpad']   = 0
     init_pgfplots_ = True
 
-def pgfplots( x, y, ax, df=None, **kwargs):
+def pgfplots( df, xname, yname, ax, **kwargs):
     """Plot normal x-y curve like with pdfplots like settings.
     Also put valus into a dataframe and return it so it can be saved into 
     a csv file.
     """
     init_pgfplots()
+    ax.plot( df[xname], df[yname]
+        , lw = kwargs.get('lw', 1 )
+        , label=kwargs.get('legend', yname)
+        )
 
-    import pandas
-    if df is None:
-        df = pandas.DataFrame()
-
-    ax.plot( x, y, **kwargs)
-    if kwargs.get('label', ''):
-        ax.legend()
+    defaultLegendOptions = dict( 
+            bbox_to_anchor=(1,1)
+            , loc = 'upper left' 
+            , fontsize = 'x-small'
+            )
+    defaultLegendOptions.update( kwargs.get( 'legend_option', {}) )
+    if kwargs.get('legend', ''):
+        ax.legend( **defaultLegendOptions )
 
     if kwargs.get('xlabel', ''):
         ax.set_xlabel( kwargs['xlabel'] )
-        df[kwargs['xlabel']] =  x
     if kwargs.get('ylabel', ''):
         ax.set_ylabel( kwargs['ylabel'] )
         df[kwargs['ylabel']] =  y
     if kwargs.get('title', '' ):
         ax.set_title( kwargs.get('title', '' ) )
 
-    return df
+    # Add label. 
+    if kwargs.get( 'label', '' ):
+        ax.text( -0.2, 1.25, kwargs['label'], fontsize='medium' 
+                , transform = ax.transAxes
+            )
