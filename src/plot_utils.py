@@ -154,9 +154,11 @@ def init_pgfplots( ):
     global init_pgfplots_
     if init_pgfplots_:
         return 
+    mpl.use('pgf')
     mpl.rcParams['text.latex.preamble'] = [
             r'\usepackage{libertine}' 
             , r'\usepackage{mathpazo}'
+            , r'\usepackage[sfdefault]{FiraSans}'
             ]
     mpl.rcParams['text.usetex'] = True
 
@@ -202,6 +204,7 @@ def pgfplots( df, xname, yname, ax, **kwargs):
     """
     init_pgfplots()
     ax.plot( df[xname], df[yname]
+        , kwargs.get('plot_style', '--' )
         , lw = kwargs.get('lw', 1 )
         , label=kwargs.get('legend', yname)
         )
@@ -225,6 +228,7 @@ def pgfplots( df, xname, yname, ax, **kwargs):
 
     # Add label. 
     if kwargs.get( 'label', '' ):
-        ax.text( -0.2, 1.25, kwargs['label'], fontsize='medium' 
+        ax.text( -0.2, 1.25, r'\textbf{%s}' % kwargs['label']
+                , fontsize='medium' 
                 , transform = ax.transAxes
             )
