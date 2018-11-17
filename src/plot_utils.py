@@ -203,11 +203,10 @@ def pgfplots( df, xname, yname, ax, **kwargs):
     a csv file.
     """
     init_pgfplots()
-    ax.plot( df[xname], df[yname]
-        , kwargs.get('plot_style', '--' )
-        , lw = kwargs.get('lw', 1 )
-        , label=kwargs.get('legend', yname)
-        )
+    ax.plot(df[xname], df[yname]
+            , kwargs.get('plot_style', '-')
+            , kwargs.get('Line2D', {})
+            )
 
     defaultLegendOptions = dict( 
             bbox_to_anchor=(1,1)
