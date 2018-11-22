@@ -205,7 +205,7 @@ def pgfplots( df, xname, yname, ax, **kwargs):
     init_pgfplots()
     ax.plot(df[xname], df[yname]
             , kwargs.get('plot_style', '-')
-            , kwargs.get('Line2D', {})
+            , **kwargs.get('Line2D', {})
             )
 
     defaultLegendOptions = dict( 
@@ -231,3 +231,26 @@ def pgfplots( df, xname, yname, ax, **kwargs):
                 , fontsize='medium' 
                 , transform = ax.transAxes
             )
+
+def phase_plot( x, y, ax):
+    import math
+    print( "[WARN ] This function has not been tested." )
+    ax.plot(x, y)
+    X, Y = np.meshgrid(x, y)
+    U, V = np.zeros(X.shape), np.zeros(Y.shape)
+    for i, xx in enumerate(x):
+        for j, yy in enumerate(y):
+            l = (xx**2 + yy**2)**0.5
+            theta = math.atan2(yy, xx)
+            U[i,j] = xx + l * math.cos(theta)
+            V[i,j] = yy + l * math.sin(theta)
+    ax.quiver(X, Y, U, V)
+
+def test():
+    ax = plt.subplot(111)
+    phase_plot( [-1, 0, 1,2,3], [3, 1, 0.1, 0.2, 0.4], ax)
+    plt.show()
+
+
+if __name__ == '__main__':
+    test()
