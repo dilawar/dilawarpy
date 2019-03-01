@@ -156,11 +156,14 @@ def init_pgfplots( ):
         return 
     mpl.use('pgf')
     mpl.rcParams['text.latex.preamble'] = [
-            r'\usepackage{libertine}' 
-            , r'\usepackage{mathpazo}'
-            , r'\usepackage[sfdefault]{FiraSans}'
+            #  r'\usepackage{libertine}'
+            r'\usepackage{newtxmath}'
+            , r'\usepackage[sfdefault,scale=0.9]{FiraSans}'
+            #  , r'\usepackage[default,scale=0.9]{opensans}'
+            , r'\usepackage[]{eulervm}'
             ]
     mpl.rcParams['text.usetex'] = True
+    mpl.rcParams['lines.linewidth'] = 1
 
     # The following settings allow you to select the fonts in math mode.
     mpl.rcParams['mathtext.fontset'] = 'stixsans'
@@ -204,7 +207,7 @@ def pgfplots( df, xname, yname, ax, **kwargs):
     """
     init_pgfplots()
     ax.plot(df[xname], df[yname]
-            , kwargs.get('plot_style', '-')
+            #  , kwargs.get('plot_style', '-')
             , **kwargs.get('Line2D', {})
             )
 
@@ -221,9 +224,8 @@ def pgfplots( df, xname, yname, ax, **kwargs):
         ax.set_xlabel( kwargs['xlabel'] )
     if kwargs.get('ylabel', ''):
         ax.set_ylabel( kwargs['ylabel'] )
-        df[kwargs['ylabel']] =  y
     if kwargs.get('title', '' ):
-        ax.set_title( kwargs.get('title', '' ) )
+        ax.set_title( kwargs.get('title', '' ), fontsize='small' )
 
     # Add label. 
     if kwargs.get( 'label', '' ):
@@ -245,6 +247,13 @@ def phase_plot( x, y, ax):
             U[i,j] = xx + l * math.cos(theta)
             V[i,j] = yy + l * math.sin(theta)
     ax.quiver(X, Y, U, V)
+
+def simple_axis(ax):
+    # Create a simple axis.
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.get_xaxis().tick_bottom()
+    ax.get_yaxis().tick_left()
 
 def test():
     ax = plt.subplot(111)
