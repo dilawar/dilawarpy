@@ -5,7 +5,7 @@ from setuptools import setup
 version_ = '0.1.0'
 stamp = datetime.datetime.now().strftime('%Y%m%d')
 if os.environ.get('TRAVIS'):
-    version_ += '.dist%s' % stamp
+    version_ += '-dist%s' % stamp
 print( "[INFO ] Packing %s" % version_ )
 
 with open("README.md") as f:
@@ -16,6 +16,7 @@ setup(
     version = version_,
     description = "My personal utilities. See the README.md file.",
     long_description = readme,
+    long_description_content_type='text/markdown',
     packages = [ "dilawar" ],
     package_dir = { "dilawar" : 'src' },
     install_requires = [ ],
