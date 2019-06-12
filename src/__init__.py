@@ -22,7 +22,3 @@ from .statistics import *
 from .information_theory import *
 from .io_utils import *
 from .logger import *
-
-# random module.
-import random2
-random = random2
