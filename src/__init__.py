@@ -23,6 +23,7 @@ from .file_utils import *
 from .plot_utils import *
 from .statistics import *
 from .information_theory import *
+from .io_utils import *
 from .logger import *
 
 # random module.
