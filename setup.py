@@ -13,7 +13,7 @@ with open("README.md") as f:
 
 setup(
     name = "dilawar",
-    version = "0.0.3",
+    version = version_,
     description = "My personal utilities. See the README.md file.",
     long_description = readme,
     packages = [ "dilawar" ],
