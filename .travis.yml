@@ -3,6 +3,13 @@ python:
     - '2.7'
     - '3.6'
 
+notifications:
+    email:
+        recipients:
+            - dilawar.s.rajput@gmail.com
+        on_success: never # default: change
+        on_failure: always # default: always
+
 script:
     - nosetests
 
