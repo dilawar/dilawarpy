@@ -27,5 +27,5 @@ from .io_utils import *
 from .logger import *
 
 # random module.
-from .random import Random
+from .my_random import Random
 random = Random( )

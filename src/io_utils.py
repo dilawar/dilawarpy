@@ -13,7 +13,25 @@ def h5store(filename, df, key = 'mydata', **kwargs):
     store.get_storer(key).attrs.metadata = kwargs
     store.close()
 
-def h5load(store, key='mydata'):
+def h5load(filename, key='mydata'):
+    import pandas as pd
+    store = pd.HDFStore(filename)
     data = store[key]
     metadata = store.get_storer(key).attrs.metadata
     return data, metadata
+
+def tests():
+    import numpy as np
+    import pandas as pd
+    data  = np.random.rand(100, 100)
+    df = pd.DataFrame(data)
+    h5store('data.h5', df, me='dilawar', mynum = 301810)
+    s, m = h5load('data.h5')
+    assert df.equals(s)
+    assert m == dict(me ='dilawar', mynum=301810)
+
+def main():
+    tests()
+
+if __name__ == '__main__':
+    main()
