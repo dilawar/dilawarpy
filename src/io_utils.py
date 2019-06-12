@@ -21,12 +21,15 @@ def h5load(filename, key='mydata'):
     return data, metadata
 
 def tests():
+    import os
     import numpy as np
     import pandas as pd
+    import tempfile
+    storeName = os.path.join(tempfile.gettempdir(),'data.h5')
     data  = np.random.rand(100, 100)
     df = pd.DataFrame(data)
-    h5store('data.h5', df, me='dilawar', mynum = 301810)
-    s, m = h5load('data.h5')
+    h5store(storeName, df, me='dilawar', mynum = 301810)
+    s, m = h5load(storeName)
     assert df.equals(s)
     assert m == dict(me ='dilawar', mynum=301810)
 
