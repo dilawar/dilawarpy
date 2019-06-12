@@ -3,6 +3,9 @@ python:
     - '2.7'
     - '3.6'
 
+script:
+    - nosetests
+
 deploy:
   provider: pypi
   user: dilawar
