@@ -1,9 +1,6 @@
 import os
 import sys
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup
 
 with open("README.md") as f:
     readme = f.read()
@@ -19,7 +16,7 @@ classifiers = [
 
 setup(
     name = "ajgar",
-    version = "0.0.2",
+    version = "0.0.3",
     description = "Helper scripts in python. See the README.md file.",
     long_description = readme,
     packages = [ "ajgar" ],
