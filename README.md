@@ -1,3 +1,3 @@
 # ajgar
 
-Some helper functions in Python
+Some helper utilities in Python
