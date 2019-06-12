@@ -1,15 +1,15 @@
+import os
+import datetime
 from setuptools import setup
+
+version_ = '0.1.0'
+stamp = datetime.datetime.now().strftime('%Y%m%d')
+if os.environ.get('TRAVIS'):
+    version_ += '.dist%s' % stamp
+print( "[INFO ] Packing %s" % version_ )
 
 with open("README.md") as f:
     readme = f.read()
-
-classifiers = [
-    'Development Status :: 4 - Beta',
-    'Intended Audience :: Developers',
-    'License :: OSI Approved :: MIT License',
-    'Operating System :: OS Independent',
-    'Programming Language :: Python'
-    ]
 
 setup(
     name = "dilawar",
@@ -21,7 +21,6 @@ setup(
     install_requires = [ ],
     author = "Dilawar Singh",
     author_email = "dilawars@ncbs.res.in",
-    url = "http://github.com/dilawar/",
-    license='GPL',
-    classifiers=classifiers,
+    url = "http://github.com/dilawar/ajgar",
+    license='GPLv3'
 )
