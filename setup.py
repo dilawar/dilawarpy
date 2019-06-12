@@ -1,5 +1,3 @@
-import os
-import sys
 from setuptools import setup
 
 with open("README.md") as f:
@@ -15,12 +13,12 @@ classifiers = [
     ]
 
 setup(
-    name = "ajgar",
+    name = "dilawar",
     version = "0.0.3",
-    description = "Helper scripts in python. See the README.md file.",
+    description = "My personal utilities. See the README.md file.",
     long_description = readme,
-    packages = [ "ajgar" ],
-    package_dir = { "ajgar" : 'src' },
+    packages = [ "dilawar" ],
+    package_dir = { "dilawar" : 'src' },
     install_requires = [ ],
     author = "Dilawar Singh",
     author_email = "dilawars@ncbs.res.in",
