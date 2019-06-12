@@ -2,7 +2,7 @@ import os
 import datetime
 from setuptools import setup
 
-version_ = '0.1.1'
+version_ = '0.1.2'
 stamp = datetime.datetime.now().strftime('%Y%m%d')
 if os.environ.get('TRAVIS'):
     version_ += '-dist%s' % stamp

@@ -8,7 +8,7 @@ __email__            = "dilawars@ncbs.res.in"
 # Snippets originally from https://stackoverflow.com/a/29130146/1805129
 def h5store(filename, df, key = 'mydata', **kwargs):
     import pandas as pd
-    store = pd.HDFStore(filename)
+    store = pd.HDFStore(filename, mode=kwargs.get('mode', 'w'))
     store.put(key, df)
     store.get_storer(key).attrs.metadata = kwargs
     store.close()
