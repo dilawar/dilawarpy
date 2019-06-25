@@ -18,7 +18,7 @@ setup(
     long_description = readme,
     long_description_content_type='text/markdown',
     packages = [ "dilawar" ],
-    package_dir = { "dilawar" : 'src' },
+    package_dir = { "dilawar" : 'dilawar' },
     install_requires = [ ],
     author = "Dilawar Singh",
     author_email = "dilawars@ncbs.res.in",
