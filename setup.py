@@ -2,10 +2,15 @@ import os
 import datetime
 from setuptools import setup
 
-version_ = '0.1.2'
+# __version__ will be evaluated.
+with open('./dilawar/version.py') as f:
+    exec(f.read())
+
+version_ = __version__
 stamp = datetime.datetime.now().strftime('%Y%m%d')
 if os.environ.get('TRAVIS'):
     version_ += '-dist%s' % stamp
+
 print( "[INFO ] Packing %s" % version_ )
 
 with open("README.md") as f:
