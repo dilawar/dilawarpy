@@ -22,3 +22,4 @@ from .statistics import *
 from .information_theory import *
 from .io_utils import *
 from .logger import *
+from .brian_utils import *
