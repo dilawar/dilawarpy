@@ -20,6 +20,9 @@ def h5load(filename, key='mydata'):
     metadata = store.get_storer(key).attrs.metadata
     return data, metadata
 
+save_df = h5store
+load_df = h5load
+
 def tests():
     import os
     import numpy as np

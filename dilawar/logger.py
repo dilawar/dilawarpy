@@ -1,7 +1,5 @@
 """logger.py: 
-
 Logging support.
-
 """
     
 __author__           = "Dilawar Singh"
