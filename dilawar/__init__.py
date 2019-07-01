@@ -11,15 +11,15 @@ __email__            = "dilawars@ncbs.res.in"
 
 try:
     # This depends on scipy
-    from .data_analysis import *
-except ImportError as e:
+    from dilawar.data_analysis import *
+except ImportError:
     pass
 
-from .text_processing import *
-from .file_utils import *
-from .plot_utils import *
-from .statistics import *
-from .information_theory import *
-from .io_utils import *
-from .logger import *
-from .brian_utils import *
+from dilawar.text_processing import *
+from dilawar.file_utils import *
+from dilawar.plot_utils import *
+from dilawar.statistics import *
+from dilawar.information_theory import *
+from dilawar.io_utils import *
+from dilawar.logger import *
+from dilawar.brian_utils import *
