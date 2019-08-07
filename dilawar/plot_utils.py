@@ -96,7 +96,18 @@ def gnuplot( script, **kwargs ):
     subprocess.Popen( [ 'gnuplot', scriptName ] )
     return True
 
-def nx_draw( graph, program = 'neato', ax = None ):
+def nx_draw(graph, ax=None, **kwargs):
+    """Draw to PNG using graphviz (default = neato).
+    """
+    import networkx as nx
+    # pydot is pure python and easy to install. PyGraphviz Agraph interface
+    # requires graphviz development libraries.
+    from networkx.drawing.nx_pydot import graphviz_layout
+    if ax is None:
+        ax = plt.gca()
+    nx.draw(graph, pos=graphviz_layout(graph), ax=ax, **kwargs)
+
+def nx_draw_subprocess( graph, program = 'neato', ax = None ):
     """Draw to PNG using graphviz (default = neato).
     """
     import matplotlib.image as mpimg
