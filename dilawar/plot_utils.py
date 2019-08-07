@@ -98,6 +98,16 @@ def gnuplot( script, **kwargs ):
 
 def nx_draw(graph, ax=None, **kwargs):
     """Draw to PNG using graphviz (default = neato).
+
+    Args:
+    ----
+        graph: networkx graph.
+        ax: matplotlib axis. If `None`, `plt.gca()` is used.
+        kwargs: Optional options to pass to `nx.draw_networkx` function.
+
+    Return:
+    ------
+        'pos' computed by graphviz. 
     """
     import networkx as nx
     # pydot is pure python and easy to install. PyGraphviz Agraph interface
@@ -105,7 +115,9 @@ def nx_draw(graph, ax=None, **kwargs):
     from networkx.drawing.nx_pydot import graphviz_layout
     if ax is None:
         ax = plt.gca()
-    nx.draw(graph, pos=graphviz_layout(graph), ax=ax, **kwargs)
+    pos=graphviz_layout(graph)
+    nx.draw_networkx(graph, pos=pos, ax=ax, **kwargs)
+    return pos
 
 def nx_draw_subprocess( graph, program = 'neato', ax = None ):
     """Draw to PNG using graphviz (default = neato).
