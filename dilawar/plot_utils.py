@@ -100,7 +100,9 @@ def nx_draw( graph, program = 'neato', ax = None ):
     """Draw to PNG using graphviz (default = neato).
     """
     import matplotlib.image as mpimg
-    from networkx.drawing.nx_agraph import write_dot
+    # pydot is pure python and easy to install. PyGraphviz Agraph interface
+    # requires graphviz development libraries.
+    from networkx.drawing.nx_pydot import write_dot
     fh, dotfile = tempfile.mkstemp( )
     pngfile = '%s.png' % dotfile
     write_dot( graph, dotfile )
