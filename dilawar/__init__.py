@@ -22,4 +22,6 @@ from dilawar.statistics import *
 from dilawar.information_theory import *
 from dilawar.io_utils import *
 from dilawar.logger import *
-from dilawar.brian_utils import *
+
+# Don't import following by default.
+#  from dilawar.brian_utils import *
