@@ -115,7 +115,7 @@ def nx_draw(graph, ax=None, **kwargs):
     from networkx.drawing.nx_pydot import graphviz_layout
     if ax is None:
         ax = plt.gca()
-    pos=graphviz_layout(graph)
+    pos=graphviz_layout(graph, program=kwargs.get('program', 'neato'))
     nx.draw_networkx(graph, pos=pos, ax=ax, **kwargs)
     return pos
 
