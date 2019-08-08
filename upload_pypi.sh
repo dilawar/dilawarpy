@@ -2,6 +2,6 @@
 set -x
 set -e
 rm -rf dist
-nosetests src
+nosetests dilawar || echo "Failed test"
 python setup.py sdist
 twine check dist/* && twine upload dist/*

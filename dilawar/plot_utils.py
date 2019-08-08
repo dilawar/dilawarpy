@@ -112,11 +112,23 @@ def nx_draw(graph, ax=None, **kwargs):
     import networkx as nx
     # pydot is pure python and easy to install. PyGraphviz Agraph interface
     # requires graphviz development libraries.
-    from networkx.drawing.nx_pydot import graphviz_layout
+    try:
+        from networkx.drawing.nx_agraph import graphviz_layout
+    except ImportError as e:
+        from networkx.drawing.nx_pydot import graphviz_layout
     if ax is None:
         ax = plt.gca()
-    pos=graphviz_layout(graph, program=kwargs.get('program', 'neato'))
+
+    if kwargs.get('pos') is None:
+        pos=graphviz_layout(graph, prog=kwargs.get('program', 'neato'))
+    else:
+        pos = kwargs['pos']
+        del kwargs['pos']
+
     nx.draw_networkx(graph, pos=pos, ax=ax, **kwargs)
+    # if edge labels found, draw them
+    if kwargs.get('edge_labels',{}):
+        nx.draw_edge_labels(graph, pos, edge_labels=kwargs['edge_labels'])
     return pos
 
 def nx_draw_subprocess( graph, program = 'neato', ax = None ):
