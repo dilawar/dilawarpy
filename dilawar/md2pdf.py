@@ -22,7 +22,7 @@ sdir_ = Path(__file__).parent
 cdn = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 
 
-pandoc_ = [ 'pandoc', '--to', 'pdf']
+pandoc_ = [ 'pandoc', '--to', 'latex']
 
 # append pandoc filters.
 for cmd in available_pandoc_filters():
@@ -57,13 +57,12 @@ def convertToPNG( img, text ):
 def toPDF(text, outfile):
     global srcFile_
     global pandoc_
-    pdffile = outfile
     pFile = '%s_pdf.md' % srcFile_ 
     with open(pFile, 'w') as f:
         f.write(text)
-    cmd = pandoc_ + [ '-o', pdffile, pFile ]
+    cmd = pandoc_ + [ '-o', outfile, pFile ]
     subprocess.call( cmd, shell = False )
-    print( '[INFO] Wrote PDF to %s' % pdffile )
+    print( '[INFO] Wrote PDF/TeX to %s' % outfile )
 
 
 def process(text, outfile):
