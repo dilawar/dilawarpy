@@ -123,6 +123,8 @@ def nx_draw(graph, ax=None, **kwargs):
         pos=graphviz_layout(graph, prog=kwargs.get('program', 'neato'))
     else:
         pos = kwargs['pos']
+
+    if 'pos' in kwargs:
         del kwargs['pos']
 
     nx.draw_networkx(graph, pos=pos, ax=ax, **kwargs)
