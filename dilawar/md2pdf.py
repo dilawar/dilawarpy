@@ -14,18 +14,21 @@ import os
 import re
 from pathlib import Path
 import subprocess 
-from dilawar.pandoc.utils import available_pandoc_filters
+import dilawar.pandoc.utils as panu
 
 srcFile_ = None
 sdir_ = Path(__file__).parent
 
-cdn = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+latexBin = panu.which('lualatex') or panu.which('pdflatex')
+assert latexBin is not None, "No lualatex or pdflatex found in your system's PATH" 
 
-
-pandoc_ = [ 'pandoc', '--to', 'latex']
+pandoc_ = [ 'pandoc', '--to', 'latex'
+        , '-s'  # standalone, in case of TeX
+        , '-N'  # Numbered section.
+        , '--pdf-engine', latexBin ]
 
 # append pandoc filters.
-for cmd in available_pandoc_filters():
+for cmd in panu.available_pandoc_filters():
     pandoc_.append('-F')
     pandoc_.append(cmd)
 
