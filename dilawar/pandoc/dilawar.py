@@ -6,7 +6,9 @@ Assumes that pdflatex is in the path, and that the standalone
 package is available.  Also assumes that ImageMagick's convert
 is in the path. Images are put in the tikz-images directory.
 
-CREDIT: Did I write this? Or downloaded it from somewhere? Oh the mystery.
+CREDIT: Did I write this? Or downloaded it from somewhere? Can't tell anymore.
+But it has gone through substantial changes now. Please let me know if you feel
+like it is derivative of your work.
 """
 
 import os
@@ -23,8 +25,12 @@ import glob
 from pandocfilters import toJSONFilters, Para, Image, get_filename4code, get_extension
 from tempfile import mkdtemp
 
-import dilawar.pandoc.theorem as theorem
-import dilawar.pandoc.code_blocks as code_blocks
+# setup env.
+import sys
+sdir = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(sdir)
+import theorem 
+import code_blocks
 
 incomment = False
 
@@ -34,7 +40,6 @@ def log( *msg ):
 def get_filename( text ):
     m = hashlib.sha256( text.encode() ).hexdigest( )
     return '%s' % m
-
 
 def download_image_from_url( url ):
     basename = get_filename4code( '_downloaded_from_url', url, '' )

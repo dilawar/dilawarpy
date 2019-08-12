@@ -28,7 +28,7 @@ setup(
         # If any package contains *.txt or *.rst files, include them:
         '': ['*.tex', '*.css', 'template/*'],
         },
-    install_requires = [ ],
+    install_requires = ['pandoc-imagine', 'pathlib'],
     author = "Dilawar Singh",
     author_email = "dilawars@ncbs.res.in",
     url = "http://github.com/dilawar/dilawar",
