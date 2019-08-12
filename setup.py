@@ -22,8 +22,12 @@ setup(
     description = "My personal utilities. See the README.md file.",
     long_description = readme,
     long_description_content_type='text/markdown',
-    packages = [ "dilawar" ],
+    packages = [ "dilawar", "dilawar.pandoc" ],
     package_dir = { "dilawar" : 'dilawar' },
+    package_data={
+        # If any package contains *.txt or *.rst files, include them:
+        '': ['*.tex', '*.css', 'template/*'],
+        },
     install_requires = [ ],
     author = "Dilawar Singh",
     author_email = "dilawars@ncbs.res.in",
