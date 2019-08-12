@@ -119,7 +119,7 @@ def nx_draw(graph, ax=None, **kwargs):
     if ax is None:
         ax = plt.gca()
 
-    if kwargs.get('pos') is None:
+    if kwargs.get('pos', None) is None:
         pos=graphviz_layout(graph, prog=kwargs.get('program', 'neato'))
     else:
         pos = kwargs['pos']
