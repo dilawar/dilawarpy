@@ -19,9 +19,17 @@ from dilawar.text_processing import *
 from dilawar.file_utils import *
 from dilawar.plot_utils import *
 from dilawar.statistics import *
-from dilawar.information_theory import *
 from dilawar.io_utils import *
 from dilawar.logger import *
+from dilawar.information_theory import *
 
-# Don't import following by default.
-#  from dilawar.brian_utils import *
+try:
+    import networkx as nx
+    from dilawar.nx_utils import *
+except Exception as e:
+    pass
+
+try:
+    from dilawar.brian_utils import *
+except Exception as e:
+    pass
