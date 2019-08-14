@@ -7,9 +7,10 @@ import numpy as np
 import subprocess
 import re
 import tempfile
-
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from . import nx_utils
+from . import plot_utils
 
 init_pgfplots_ = False
 
@@ -128,9 +129,18 @@ def nx_draw(graph, ax=None, **kwargs):
         del kwargs['pos']
 
     nx.draw_networkx(graph, pos=pos, ax=ax, **kwargs)
-    # if edge labels found, draw them
-    if kwargs.get('edge_labels',{}):
-        nx.draw_edge_labels(graph, pos, edge_labels=kwargs['edge_labels'])
+    # Draw edge labels.
+    if kwargs.get('edge_labels', None) is not None:
+        el = kwargs['edge_labels']
+        if isinstance(el, str):
+            elDict = {}
+            for s, t in graph.edges():
+                elDict[(s,t)] = graph[s][t].get(el, '')
+        elif isinstance(el, dict):
+            elDict = el
+        else:
+            elDict = {}
+        nx.draw_networkx_edge_labels(graph, pos, edge_labels=elDict)
     return pos
 
 def nx_draw_subprocess( graph, program = 'neato', ax = None ):
@@ -294,11 +304,24 @@ def simple_axis(ax):
     ax.get_xaxis().tick_bottom()
     ax.get_yaxis().tick_left()
 
-def test():
-    ax = plt.subplot(111)
-    phase_plot( [-1, 0, 1,2,3], [3, 1, 0.1, 0.2, 0.4], ax)
-    plt.show()
+def test_nx_draw(ax):
+    import io
+    import networkx as nx
+    f = io.StringIO( '''digraph G {
+    a -> b [weight=1];
+    a -> c [weight=2];
+    }''')
+    g = nx.DiGraph(nx_utils.read_dot(f))
+    assert g.number_of_edges() == 2
+    assert g.number_of_nodes() == 3
+    plot_utils.nx_draw(g, ax=ax, edge_labels='weight')
 
+def test():
+    ax1 = plt.subplot(121)
+    ax2 = plt.subplot(122)
+    phase_plot( [-1, 0, 1,2,3], [3, 1, 0.1, 0.2, 0.4], ax1)
+    test_nx_draw(ax2)
+    plt.savefig('%s.png' % __file__)
 
 if __name__ == '__main__':
     test()
