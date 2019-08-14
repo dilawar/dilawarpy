@@ -29,7 +29,4 @@ try:
 except Exception as e:
     pass
 
-try:
-    from dilawar.brian_utils import *
-except Exception as e:
-    pass
+# NOTE: brian2 should not be imported by default. 
