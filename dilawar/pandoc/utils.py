@@ -7,9 +7,6 @@ import os
 import sys
 import subprocess
 from pathlib import Path
-import logging
-logger = logging.getLogger('dilawar.pandoc')
-logger.setLevel(logging.INFO)
 
 sdir_ = Path(__file__).parent
 
@@ -19,9 +16,6 @@ all_ = [ 'pandoc-imagine'
         , 'pantable'
         , sdir_ / 'dilawar.py'
         ]
-
-def _print(*args):
-    print(f'dilawar.pandoc >>> ', *args, file=sys.stderr)
 
 # This is from  https://stackoverflow.com/a/377028/1805129
 def which(program):
@@ -42,19 +36,22 @@ def which(program):
 def available_pandoc_filters():
     global all_
     cmds = [ which(prog) for prog in all_]
-    return [x for x in cmds if x is not None]
+    return [str(x) for x in cmds if x is not None]
 
 
 def execute_pandoc(arglst):
     pandoc = which('pandoc')
-    filters = [f'-F {x}' for x in available_pandoc_filters()]
-    cmd = [pandoc] + filters + arglst
-    _print(f"Executing {' '.join(cmd)}")
-    proc  = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    while True:
-        line = proc.stdout.readline()
-        if not line:
-            break
-        _print(f'>>> {line}')
-    return 0
+    filters = ' -F '.join(available_pandoc_filters())
+    cmd = f'{pandoc} {filters} ' + ' '.join(arglst)
+    print(f'Executing {cmd}')
+    p = subprocess.run(cmd.split()
+            , stdin=sys.stdin
+            , capture_output=True
+            , text=True
+            )
+    msg = p.stdout
+    if p.returncode:
+        msg += p.stderr
+    print(msg)
+    return p.returncode
 
