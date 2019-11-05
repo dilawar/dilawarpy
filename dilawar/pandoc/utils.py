@@ -43,7 +43,6 @@ def execute_pandoc(arglst):
     pandoc = which('pandoc')
     filters = ' -F '.join(available_pandoc_filters())
     cmd = f'{pandoc} {filters} ' + ' '.join(arglst)
-    print(f'Executing {cmd}')
     p = subprocess.run(cmd.split()
             , stdin=sys.stdin
             , capture_output=True
@@ -52,6 +51,6 @@ def execute_pandoc(arglst):
     msg = p.stdout
     if p.returncode:
         msg += p.stderr
-    print(msg)
+        print(msg)
     return p.returncode
 
