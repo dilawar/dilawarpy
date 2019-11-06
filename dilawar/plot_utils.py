@@ -311,7 +311,7 @@ def simple_axis(ax):
     ax.get_xaxis().tick_bottom()
     ax.get_yaxis().tick_left()
 
-def test_nx_draw(ax):
+def _test_nx_draw(ax):
     import io
     import networkx as nx
     f = io.StringIO( '''digraph G {
@@ -327,7 +327,7 @@ def test():
     ax1 = plt.subplot(121)
     ax2 = plt.subplot(122)
     phase_plot( [-1, 0, 1,2,3], [3, 1, 0.1, 0.2, 0.4], ax1)
-    test_nx_draw(ax2)
+    _test_nx_draw(ax2)
     plt.savefig('%s.png' % __file__)
 
 if __name__ == '__main__':

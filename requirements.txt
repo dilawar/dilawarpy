@@ -2,8 +2,8 @@ numpy
 matplotlib
 pandas
 scipy
-random2
 tables
 brian2
-pyflutes
+panflute
 pandocfilters
+pandoc-imagine
