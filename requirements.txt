@@ -3,6 +3,7 @@ matplotlib
 pandas
 scipy
 random2
-pathlib
 tables
 brian2
+pyflutes
+pandocfilters

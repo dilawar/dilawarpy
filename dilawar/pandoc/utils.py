@@ -41,6 +41,7 @@ def available_pandoc_filters():
 
 def execute_pandoc(arglst):
     pandoc = which('pandoc')
+    pandoc += ' --pdf-engine lualatex '
     filters = ' '.join([f'-F {f}' for f in available_pandoc_filters()])
     cmd = f'{pandoc} {filters} ' + ' '.join(arglst)
     p = subprocess.run(cmd.split()
