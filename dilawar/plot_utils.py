@@ -199,7 +199,7 @@ def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
         plt.colorbar( im, ax = ax )
     return im
 
-def init_pgfplots( ):
+def init_pgfplots(**kwargs):
     global init_pgfplots_
     if init_pgfplots_:
         return 
@@ -218,7 +218,7 @@ def init_pgfplots( ):
     mpl.rcParams['mathtext.fontset'] = 'stixsans'
     mpl.rcParams['mathtext.default'] = 'regular'
     # AXES
-    mpl.rcParams['axes.labelsize'] =  'x-small'
+    mpl.rcParams['axes.labelsize'] =  'small'
     mpl.rcParams['axes.formatter.use_mathtext'] = True
     mpl.rcParams['axes.formatter.min_exponent'] = 0
     mpl.rcParams['axes.formatter.useoffset'] = True  
@@ -248,6 +248,11 @@ def init_pgfplots( ):
     mpl.rcParams['legend.fontsize']    = 'small'
     mpl.rcParams['legend.borderpad']   = 0
     init_pgfplots_ = True
+
+def initPGFBackend(**kwargs):
+    """Initialise PGF backend with preloaded packages."""
+    init_pgfplots(**kwargs)
+    return True
 
 def pgfplots( df, xname, yname, ax, **kwargs):
     """Plot normal x-y curve like with pdfplots like settings.
