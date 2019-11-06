@@ -203,13 +203,15 @@ def init_pgfplots(**kwargs):
     global init_pgfplots_
     if init_pgfplots_:
         return 
+    mathStyle = kwargs.get('math_style', 'upright')
     mpl.use('pgf')
     mpl.rcParams['text.latex.preamble'] = [
             #  r'\usepackage{libertine}'
             r'\usepackage{newtxmath}'
             , r'\usepackage[sfdefault,scale=0.9]{FiraSans}'
             #  , r'\usepackage[default,scale=0.9]{opensans}'
-            , r'\usepackage[]{eulervm}'
+            #  , r'\usepackage[]{eulervm}'
+            , r'\usepackage[%s]{unitcode-math}' % mathStyle
             ]
     mpl.rcParams['text.usetex'] = True
     mpl.rcParams['lines.linewidth'] = 1
