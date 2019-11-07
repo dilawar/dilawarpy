@@ -55,7 +55,7 @@ def execute_pandoc(*args):
         # --katex may not work when we are behing proxy. So let USER specify it.
         extra += ' --self-contained'
         if re.search(r'--css\s+', argStr) is None:
-            extra += f'--css {css}'
+            extra += f' --css {css} '
     filters = ' '.join([f'-F {f}' for f in available_pandoc_filters()])
     cmd = f'{pandoc} {filters} {extra} ' + argStr
     print(cmd, file=sys.stderr)
