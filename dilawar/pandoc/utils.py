@@ -6,6 +6,7 @@ __email__            = "dilawars@ncbs.res.in"
 import os
 import re
 import sys
+import time
 import subprocess
 from pathlib import Path
 
@@ -43,15 +44,22 @@ def available_pandoc_filters():
 def execute_pandoc(*args):
     """Top level command.
     """
+    sdir = Path(__file__).parent
+    css = sdir / 'pandoc.css'
     argStr = ' '.join(*args)
     extra = ''
     pandoc = which('pandoc')
-    if re.search(r'-t\s+latex'):
+    if re.search(r'-t\s+latex', argStr):
         extra += ' --pdf-engine lualatex --number-section -s'
-    if re.search(r'-t\s+html\S*'):
-        extra += ' --self-contained --katex'
+    if re.search(r'-t\s+html\S*', argStr):
+        # --katex may not work when we are behing proxy. So let USER specify it.
+        extra += ' --self-contained'
+        if re.search(r'--css\s+', argStr) is None:
+            extra += f'--css {css}'
     filters = ' '.join([f'-F {f}' for f in available_pandoc_filters()])
     cmd = f'{pandoc} {filters} {extra} ' + argStr
+    print(cmd, file=sys.stderr)
+    t0 = time.time()
     p = subprocess.run(cmd.split()
             , stdin=sys.stdin
             , capture_output=True
@@ -61,5 +69,18 @@ def execute_pandoc(*args):
     if p.returncode:
         msg += p.stderr
         print(f'ERROR FROM dilawar.pandoc:\n{msg}')
+    print( f"[INFO ] Took {time.time()-t0:.2f} sec", file=sys.stderr)
     return p.returncode
 
+def t_pandoc():
+    # test pandoc.
+    infile = Path(__file__).parent /'..'/'..'/'README.md'
+    assert infile.exists(), infile
+    execute_pandoc(f'-t html5 -o a.html {infile}'.split())
+    
+
+def test():
+    t_pandoc()
+
+if __name__ == '__main__':
+    test()
