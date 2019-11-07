@@ -49,15 +49,15 @@ def download_image_from_url( url ):
         return  glob.glob( '%s/*' % basename )[0]
     try:
         r = requests.get( url, stream = True, timeout = 4)
-    except Exception as e:
+    except Exception:
         return url
 
     ext = mimetypes.guess_extension( r.headers['content-type'] ) or url.split('.')[-1]
-    if '.jpe' in ext:
-        ext = '.jpg'
+    if 'jpe' in ext:
+        ext = 'jpg'
 
     os.makedirs( basename )
-    filename = os.path.join( basename, 'downloaded_img' + ext )
+    filename = os.path.join( basename, f'downloaded_img.{ext}')
     if not os.path.exists( filename ):
         with open( filename, 'wb' ) as f:
             f.write( r.content )
