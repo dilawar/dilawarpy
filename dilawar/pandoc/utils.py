@@ -4,6 +4,7 @@ __maintainer__       = "Dilawar Singh"
 __email__            = "dilawars@ncbs.res.in"
 
 import os
+import re
 import sys
 import subprocess
 from pathlib import Path
@@ -39,11 +40,18 @@ def available_pandoc_filters():
     return [str(x) for x in cmds if x is not None]
 
 
-def execute_pandoc(arglst):
+def execute_pandoc(*args):
+    """Top level command.
+    """
+    argStr = ' '.join(*args)
+    extra = ''
     pandoc = which('pandoc')
-    pandoc += ' --pdf-engine lualatex '
+    if re.search(r'-t\s+latex'):
+        extra += ' --pdf-engine lualatex --number-section -s'
+    if re.search(r'-t\s+html\S*'):
+        extra += ' --self-contained --katex'
     filters = ' '.join([f'-F {f}' for f in available_pandoc_filters()])
-    cmd = f'{pandoc} {filters} ' + ' '.join(arglst)
+    cmd = f'{pandoc} {filters} {extra} ' + argStr
     p = subprocess.run(cmd.split()
             , stdin=sys.stdin
             , capture_output=True
