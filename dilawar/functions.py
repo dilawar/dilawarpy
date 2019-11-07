@@ -21,6 +21,17 @@ def hill(x, n, k=1):
     """
     return k*(x**n/(1+x**n))
 
+def logistic(x, alpha=1):
+    """logistic function.
+    """
+    return (1+np.exp(-x))**(-alpha)
+
+def sigmoid(x):
+    """Sigmoid function.
+
+    """
+    return logistic(x, 1)
+
 
 def test():
     # Plot all functions.
@@ -40,6 +51,14 @@ def test():
         plt.semilogx(x, y, label=f'n={n}')
     plt.legend()
     plt.title(r'Hill function: $\frac{x^n}{1+x^n}$')
+
+    plt.subplot(223)
+    x = np.linspace(-5, 5, 1000)
+    for alpha in [0, 0.1, 0.5, 1, 2, 4, 10, 100]:
+        plt.plot(x, logistic(x, alpha), label=fr'$α={alpha}$')
+    plt.legend(bbox_to_anchor=(1,1), loc='upper left', fontsize=8)
+    plt.title(r'Logistic: $(1+e^{-x})^{-α}$')
+
 
     plt.tight_layout()
     plt.show()
