@@ -22,6 +22,7 @@ from dilawar.statistics import *
 from dilawar.io_utils import *
 from dilawar.logger import *
 from dilawar.information_theory import *
+from dilawar.functions import *
 
 try:
     import networkx as nx
