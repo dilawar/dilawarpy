@@ -16,6 +16,7 @@ all_ = [ 'pandoc-imagine'
         , 'pandoc-crossref'
         , 'pandoc-citeproc' 
         , 'pantable'
+        , sdir_ / 'quantity.py'
         , sdir_ / 'dilawar.py'
         ]
 
