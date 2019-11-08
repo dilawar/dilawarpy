@@ -311,6 +311,12 @@ def simple_axis(ax):
     ax.get_xaxis().tick_bottom()
     ax.get_yaxis().tick_left()
 
+def mid(x: np.array):
+    """Find midpoint of given array.
+    Useful to find midpoint of bins returned by np.histogram function.
+    """
+    return (x[:-1]+x[1:])/2
+
 def _test_nx_draw(ax):
     import io
     import networkx as nx
