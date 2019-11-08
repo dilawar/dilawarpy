@@ -249,6 +249,8 @@ def init_pgfplots(**kwargs):
     mpl.rcParams['legend.fancybox']    = True 
     mpl.rcParams['legend.fontsize']    = 'small'
     mpl.rcParams['legend.borderpad']   = 0
+    mpl.rcParams['legend.columnspacing']   = 1.0
+    mpl.rcParams['legend.handlelength']   = 1.5
     init_pgfplots_ = True
 
 def initPGFBackend(**kwargs):
