@@ -313,6 +313,11 @@ def simple_axis(ax):
     ax.get_xaxis().tick_bottom()
     ax.get_yaxis().tick_left()
 
+def addLabel(label, ax, **kwargs):
+    # Add label to axis.
+    x, y = kwargs.get('x', -0.15), kwargs.get('y', 1.1)
+    ax.text(x, y, label, transform=ax.transAxes)
+
 def mid(x: np.array):
     """Find midpoint of given array.
     Useful to find midpoint of bins returned by np.histogram function.
