@@ -207,13 +207,12 @@ def init_pgfplots(**kwargs):
     mpl.use('pgf')
     mpl.rcParams['text.latex.preamble'] = [
             r'\usepackage{mathtools}'
-            #, r'\usepackage{libertine}'
+            , r'\usepackage{libertine}'
             , r'\usepackage{newtxmath}'
             , r'\usepackage{tikz}'
-            , r'\usepackage[sfdefault,scale=0.9]{FiraSans}'
-            #  , r'\usepackage[default,scale=0.9]{opensans}'
-            , r'\usepackage[]{eulervm}'
-            #  , r'\usepackage[math-style=%s]{unicode-math}' % mathStyle
+            #, r'\usepackage[sfdefault,scale=0.9]{FiraSans}'
+            #, r'\usepackage[default,scale=0.9]{opensans}'
+            , r'\usepackage[small,euler-digits]{eulervm}'
             ]
     mpl.rcParams['pgf.preamble'] = ''.join(mpl.rcParams['text.latex.preamble'])
     mpl.rcParams['text.usetex'] = True
