@@ -164,9 +164,9 @@ def nx_draw_subprocess( graph, program = 'neato', ax = None ):
 def _matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
     if ax is None:
         ax = plt.subplot( 111 )
-    img = np.matrix( img )
+    img = np.matrix(img)
     nc, nr = img.shape
-    im = ax.imshow( img
+    im = ax.imshow(img
             , interpolation = kwargs.get( 'interpolation', 'none')
             , aspect = kwargs.get( 'aspect', 'auto' ) 
             , cmap = kwargs.get( 'cmap', 'viridis' )
