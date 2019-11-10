@@ -208,7 +208,8 @@ def init_pgfplots(**kwargs):
     mpl.rcParams['text.latex.preamble'] = [
             #  r'\usepackage{libertine}'
             r'\usepackage{newtxmath}'
-            , r'\usepackage{mathtool,amsmath,amssymb}'
+            , r'\usepackage{mathtools}'
+            , r'\usepackage{tikz}'
             , r'\usepackage[sfdefault,scale=0.9]{FiraSans}'
             #  , r'\usepackage[default,scale=0.9]{opensans}'
             #  , r'\usepackage[]{eulervm}'
