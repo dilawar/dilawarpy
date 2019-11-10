@@ -185,7 +185,7 @@ def _matrix_plot(img, xvec, yvec, ax=None, **kwargs):
     yticks = kwargs.get('yticks', [])
     if not xticks:
         nticks = kwargs.get('num_xticks', kwargs.get('num_ticks', 5))
-        xticks = [(i, '%.2g'%xvec[int(i)])
+        xticks = [(i, xvec[int(i)])
                   for i in np.linspace(0, len(xvec)-1, nticks)]
 
     xpos, xlabels = zip(*xticks)
@@ -203,9 +203,11 @@ def _matrix_plot(img, xvec, yvec, ax=None, **kwargs):
 
     ax.set_xlabel(kwargs.get('xlabel', 'NA'))
     ax.set_ylabel(kwargs.get('ylabel', 'NA'))
+    ax.set_title(kwargs.get('title', ''))
 
     if kwargs.get('colorbar', True):
-        plt.colorbar(im, ax=ax)
+        plt.colorbar(im, ax=ax, format=kwargs.get('colorbar_fmt', '%g'))
+
     return im
 
 
@@ -342,7 +344,7 @@ def simple_axis(ax):
 
 def addLabel(label, ax, **kwargs):
     # Add label to axis.
-    x, y = kwargs.get('x', -0.15), kwargs.get('y', 1.1)
+    x, y = kwargs.get('x', -0.2), kwargs.get('y', 1.15)
     ax.text(x, y, label, transform=ax.transAxes)
 
 
