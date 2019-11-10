@@ -161,10 +161,9 @@ def nx_draw_subprocess( graph, program = 'neato', ax = None ):
         else:
             raise UserWarning( 'Failed to draw graph using %s' % program)
 
-def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
+def _matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
     if ax is None:
         ax = plt.subplot( 111 )
-
     img = np.matrix( img )
     nc, nr = img.shape
     im = ax.imshow( img
@@ -198,6 +197,12 @@ def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
     if kwargs.get( 'colorbar', True):
         plt.colorbar( im, ax = ax )
     return im
+
+def matrixPlot( img, xvec, yvec, ax = None, **kwargs ):
+    _matrix_plot(img, xvec, yvec, ax, **kwargs)
+
+def matrix_plot( img, xvec, yvec, ax = None, **kwargs ):
+    raise DeprecationWarning("Use matrixPlot instead.")
 
 def init_pgfplots(**kwargs):
     global init_pgfplots_
