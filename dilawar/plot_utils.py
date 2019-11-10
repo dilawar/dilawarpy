@@ -170,7 +170,6 @@ def nx_draw_subprocess(graph, program='neato', ax=None):
         else:
             raise UserWarning('Failed to draw graph using %s' % program)
 
-
 def _matrix_plot(img, xvec, yvec, ax=None, **kwargs):
     if ax is None:
         ax = plt.subplot(111)
@@ -187,7 +186,7 @@ def _matrix_plot(img, xvec, yvec, ax=None, **kwargs):
     if not xticks:
         nticks = kwargs.get('num_xticks', kwargs.get('num_ticks', 5))
         xticks = [(i, xvec[int(i)])
-                  for i in np.linspace(0, len(xvec) - 1, nticks)]
+                  for i in np.linspace(0, len(xvec)-1, nticks)]
 
     xpos, xlabels = zip(*xticks)
     ax.set_xticks(xpos)
@@ -195,8 +194,8 @@ def _matrix_plot(img, xvec, yvec, ax=None, **kwargs):
 
     if not yticks:
         nticks = kwargs.get('num_yticks', kwargs.get('num_ticks', 5))
-        yticks = [(i, '%.3g' % yvec[int(i)])
-                  for i in np.linspace(0, len(yvec) - 1, nticks)]
+        yticks = [(i, yvec[int(i)])
+                  for i in np.linspace(0, len(yvec)-1, nticks)]
 
     ypos, ylabels = zip(*yticks)
     ax.set_yticks(ypos)
