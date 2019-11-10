@@ -185,7 +185,7 @@ def _matrix_plot(img, xvec, yvec, ax=None, **kwargs):
     yticks = kwargs.get('yticks', [])
     if not xticks:
         nticks = kwargs.get('num_xticks', kwargs.get('num_ticks', 5))
-        xticks = [(i, xvec[int(i)])
+        xticks = [(i, '%.2g'%xvec[int(i)])
                   for i in np.linspace(0, len(xvec)-1, nticks)]
 
     xpos, xlabels = zip(*xticks)
@@ -194,7 +194,7 @@ def _matrix_plot(img, xvec, yvec, ax=None, **kwargs):
 
     if not yticks:
         nticks = kwargs.get('num_yticks', kwargs.get('num_ticks', 5))
-        yticks = [(i, yvec[int(i)])
+        yticks = [(i, '%.2g'%yvec[int(i)])
                   for i in np.linspace(0, len(yvec)-1, nticks)]
 
     ypos, ylabels = zip(*yticks)
