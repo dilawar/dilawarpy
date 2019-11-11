@@ -13,12 +13,11 @@ from pathlib import Path
 sdir_ = Path(__file__).parent
 
 all_ = [ 'pandoc-imagine'
+        , sdir_ / 'gls.py'  # Don't know why but this should come before cross-ref
         , 'pandoc-crossref'
         , 'pandoc-citeproc' 
         , 'pantable'
-        , sdir_ / 'gls.py'
         , sdir_ / 'quantity.py'
-        , sdir_ / 'dilawar.py'
         ]
 
 # This is from  https://stackoverflow.com/a/377028/1805129
@@ -43,14 +42,14 @@ def available_pandoc_filters():
     return [str(x) for x in cmds if x is not None]
 
 def executeCommand(cmd):
+    print(f"dilawar.pandoc>> Executing {cmd}", file=sys.stderr)
     cmd = cmd.split()
-    p = subprocess.Popen(cmd, stdin=subprocess.PIPE
-            , stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     while True:
         line = p.stdout.readline()
         if not line:
             break
-        print('dilawar.pandoc> %s', line)
+        print('dilawar.pandoc> %s', line, file=sys.stderr)
     return p.returncode
 
 def execute_pandoc(*args):
@@ -70,18 +69,9 @@ def execute_pandoc(*args):
         ##    extra += f' --css {css} '
     filters = ' '.join([f'-F {f}' for f in available_pandoc_filters()])
     cmd = f'{pandoc} {filters} {extra} ' + argStr
-    print(cmd, file=sys.stderr)
     t0 = time.time()
     st = executeCommand(cmd)
-    #  p = subprocess.run(cmd.split(), stdin=sys.stdin
-            #  , stdout=subprocess.PIPE, stderr=subprocess.PIPE
-            #  , timeout=120, check=True, universal_newlines=True
-            #  )
-    #  msg = p.stdout
-    #  if p.returncode:
-        #  msg += p.stderr
-        #  print(f'ERROR FROM dilawar.pandoc:\n{msg}')
-    print( f"[INFO ] Took {time.time()-t0:.2f} sec", file=sys.stderr)
+    print( f"dilawar.pandoc> Took {time.time()-t0:.2f} sec", file=sys.stderr)
     return st
 
 def t_pandoc():

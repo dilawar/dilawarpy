@@ -7,11 +7,15 @@ The format of this file is same as LaTeX glossaries package.
 """
 
 import os
+import sys
 import re
 import panflute as P
 
 gls_ = {}
 first_ = []
+
+def _log(*args):
+    print(*args, file=sys.stderr)
 
 def readGlossaries(gfile):
     global gsl_
@@ -46,19 +50,24 @@ def prepare_gls(doc):
     glsFile = doc.get_metadata('glossaries')
     # Thanks to snippet here
     # https://github.com/sergiocorreia/panflute/issues/74#issue-308922983
-    if doc.format in ['latex', 'context', 'tex']:
-        lines =[r'\usepackage[acronym]{glossaries}'
-                , r'\loadglsentries{%s}'%glsFile]
-        tex = [P.MetaInlines(P.RawInline(l, format='latex')) for l in lines]
-        if 'header-includes' not in doc.metadata:
-            doc.metadata['header-includes'] = tex
-        else:
-            doc.metadata['header-includes'].content.extend(tex)
+    if doc.format in ['latex']:
         return
     if glsFile is None or not glsFile.strip():
         return
     if os.path.exists(glsFile.strip()):
         readGlossaries(glsFile.strip())
+
+def finalize_gls(doc):
+    glsFile = doc.get_metadata('glossaries')
+    if doc.format in ['latex']:
+        lines =[r'\usepackage[acronym]{glossaries}'
+                , r'\loadglsentries{%s}'%glsFile]
+        tex = [P.MetaInlines(P.RawInline(l, format='latex')) for l in lines]
+        tex = P.MetaList(*tex)
+        if 'header-includes' not in doc.metadata:
+            doc.metadata['header-includes'] = tex
+        else:
+            doc.metadata['header-includes'].content.extend(tex)
 
 def action_gls(elem, doc):
     global gls_
@@ -72,7 +81,7 @@ def action_gls(elem, doc):
             return P.Str(new.text)
 
 def main(doc=None):
-    P.run_filter(action_gls, prepare=prepare_gls, doc=doc)
+    P.run_filter(action_gls, prepare=prepare_gls, finalize=finalize_gls, doc=doc)
 
 if __name__ == '__main__':
     main()
