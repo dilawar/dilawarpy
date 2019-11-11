@@ -8,7 +8,10 @@ import re
 import sys
 import time
 import subprocess
+import colorama
 from pathlib import Path
+
+colorama.init()
 
 sdir_ = Path(__file__).parent
 
@@ -44,12 +47,18 @@ def available_pandoc_filters():
 def executeCommand(cmd):
     print(f"dilawar.pandoc>> Executing {cmd}", file=sys.stderr)
     cmd = cmd.split()
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(cmd
+            , stdout=subprocess.PIPE
+            , stderr=subprocess.STDOUT
+            , stdin=sys.stdin
+            , universal_newlines=True
+            , encoding="utf-8"
+            )
     while True:
         line = p.stdout.readline()
         if not line:
             break
-        print('dilawar.pandoc> %s', line, file=sys.stderr)
+        print('dilawar.pandoc> %s'%line, file=sys.stderr)
     return p.returncode
 
 def execute_pandoc(*args):

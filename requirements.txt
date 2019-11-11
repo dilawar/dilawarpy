@@ -6,4 +6,5 @@ tables
 brian2
 panflute
 pandocfilters
+colorama
 pandoc-imagine
