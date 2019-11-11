@@ -73,7 +73,7 @@ def execute_pandoc(*args):
     extra = ''
     pandoc = which('pandoc')
     if re.search(r'-t\s+latex', argStr):
-        extra += ' --pdf-engine lualatex --number-section -s'
+        extra += ' --pdf-engine lualatex -s'
     if re.search(r'-t\s+html\S*', argStr):
         # --katex may not work when we are behing proxy. So let USER specify it.
         extra += ' --self-contained'
