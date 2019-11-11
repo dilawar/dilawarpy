@@ -41,12 +41,22 @@ def available_pandoc_filters():
     cmds = [ which(prog) for prog in all_]
     return [str(x) for x in cmds if x is not None]
 
+def executeCommand(cmd):
+    cmd = cmd.split()
+    p = subprocess.Popen(cmd, stdin=subprocess.PIPE
+            , stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    while True:
+        line = p.stdout.readline()
+        if not line:
+            break
+        print('dilawar.pandoc> %s', line)
+    return p.returncode
 
 def execute_pandoc(*args):
     """Top level command.
     """
-    sdir = Path(__file__).parent
-    css = sdir / 'pandoc.css'
+    #  sdir = Path(__file__).parent
+    #  css = sdir / 'pandoc.css'
     argStr = ' '.join(*args)
     extra = ''
     pandoc = which('pandoc')
@@ -61,17 +71,17 @@ def execute_pandoc(*args):
     cmd = f'{pandoc} {filters} {extra} ' + argStr
     print(cmd, file=sys.stderr)
     t0 = time.time()
-    p = subprocess.run(cmd.split()
-            , stdin=sys.stdin
-            , capture_output=True
-            , text=True
-            )
-    msg = p.stdout
-    if p.returncode:
-        msg += p.stderr
-        print(f'ERROR FROM dilawar.pandoc:\n{msg}')
+    st = executeCommand(cmd)
+    #  p = subprocess.run(cmd.split(), stdin=sys.stdin
+            #  , stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            #  , timeout=120, check=True, universal_newlines=True
+            #  )
+    #  msg = p.stdout
+    #  if p.returncode:
+        #  msg += p.stderr
+        #  print(f'ERROR FROM dilawar.pandoc:\n{msg}')
     print( f"[INFO ] Took {time.time()-t0:.2f} sec", file=sys.stderr)
-    return p.returncode
+    return st
 
 def t_pandoc():
     # test pandoc.
