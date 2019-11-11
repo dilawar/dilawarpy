@@ -44,15 +44,16 @@ def replaceGls(text, gls):
 
 def prepare_gls(doc):
     glsFile = doc.get_metadata('glossaries')
+    # Thanks to snippet here
+    # https://github.com/sergiocorreia/panflute/issues/74#issue-308922983
     if doc.format in ['latex', 'context', 'tex']:
+        lines =[r'\usepackage[acronym]{glossaries}'
+                , r'\loadglsentries{%s}'%glsFile]
+        tex = [P.MetaInlines(P.RawInline(l, format='latex')) for l in lines]
         if 'header-includes' not in doc.metadata:
-            doc.metadata['header-includes'] = P.MetaList()
-        doc.metadata['header-includes'].append(
-                P.MetaString(r'\usepackage[acronym]{glossaries}')
-                )
-        doc.metadata['header-includes'].append( 
-                P.MetaString(r'\loadglsentries{%s}'%glsFile)
-                )
+            doc.metadata['header-includes'] = tex
+        else:
+            doc.metadata['header-includes'].content.extend(tex)
         return
     if glsFile is None or not glsFile.strip():
         return
