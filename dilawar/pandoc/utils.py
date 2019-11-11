@@ -8,10 +8,10 @@ import re
 import sys
 import time
 import subprocess
-import colorama
+import colorama as C
 from pathlib import Path
 
-colorama.init()
+C.init(autoreset=True)
 
 sdir_ = Path(__file__).parent
 
@@ -44,8 +44,11 @@ def available_pandoc_filters():
     cmds = [ which(prog) for prog in all_]
     return [str(x) for x in cmds if x is not None]
 
+def _prefix(msg):
+    return f"{C.Fore.BLUE}dilawar.pandoc>{C.Style.RESET_ALL}{msg.strip()}"
+
 def executeCommand(cmd):
-    print(f"dilawar.pandoc>> Executing {cmd}", file=sys.stderr)
+    print(_prefix(f"Executing {cmd}"), file=sys.stderr)
     cmd = cmd.split()
     p = subprocess.Popen(cmd
             , stdout=subprocess.PIPE
@@ -58,7 +61,7 @@ def executeCommand(cmd):
         line = p.stdout.readline()
         if not line:
             break
-        print('dilawar.pandoc> %s'%line, file=sys.stderr)
+        print(_prefix(line), file=sys.stderr)
     return p.returncode
 
 def execute_pandoc(*args):
@@ -80,7 +83,7 @@ def execute_pandoc(*args):
     cmd = f'{pandoc} {filters} {extra} ' + argStr
     t0 = time.time()
     st = executeCommand(cmd)
-    print( f"dilawar.pandoc> Took {time.time()-t0:.2f} sec", file=sys.stderr)
+    print(_prefix(f" Took {time.time()-t0:.2f} sec"), file=sys.stderr)
     return st
 
 def t_pandoc():
