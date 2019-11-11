@@ -44,6 +44,16 @@ def replaceGls(text, gls):
 
 def prepare_gls(doc):
     glsFile = doc.get_metadata('glossaries')
+    if doc.format in ['latex', 'context', 'tex']:
+        if 'header-includes' not in doc.metadata:
+            doc.metadata['header-includes'] = P.MetaList()
+        doc.metadata['header-includes'].append(
+                P.MetaString(r'\usepackage[acronym]{glossaries}')
+                )
+        doc.metadata['header-includes'].append( 
+                P.MetaString(r'\loadglsentries{%s}'%glsFile)
+                )
+        return
     if glsFile is None or not glsFile.strip():
         return
     if os.path.exists(glsFile.strip()):
@@ -52,6 +62,8 @@ def prepare_gls(doc):
 def action_gls(elem, doc):
     global gls_
     if isinstance(elem, P.RawInline):
+        if not gls_:
+            return
         if '\\gls' in elem.text:
             new = P.convert_text(replaceGls(elem.text, gls_))[0]
             if isinstance(new, P.Para):
