@@ -22,14 +22,6 @@ def searchQuantity(text):
             re.finditer(r'(\\Q|\\quantity)\{(?P<val>\S+)\s+(?P<uexpr>[^}]+)\}'
                 , text)]
 
-def reformatElem(elem, fmt='md'):
-    num, unit = elem.text.split(' ', 2)
-    numF = formatEval(num, fmt)
-    txt = f'{numF} {unit}'
-    new = P.convert_text(txt)[0].content
-    return list(new)
-
-
 def formatEval(val, fmt):
     # TODO: Add a cheap test to check if val can be converted to float.
     val = val.lower()
@@ -50,6 +42,12 @@ def formatEval(val, fmt):
         return val
     else:
         return f'{a}^{b}^'
+
+def _removeUnity(tex):
+    # Removes unity prefix. E.g.,
+    # - 1e10 -> e10
+    # - 1.00e-11 -> e-11
+    return re.sub(r'1(\.0*)?e', 'e', tex)
 
 def formatQuantity(qexpr, fmt):
     ms = searchQuantity(qexpr)
@@ -74,10 +72,10 @@ def action_quantity(elem, doc):
         for m, f, success in formatQuantity(elem.text, w_):
             if success:
                 if w_ == 'latex':
-                    elem.text = f'{f:Lx}'
+                    elem.text = _removeUnity(f'{f:Lx}')
                 else:
                     elem.text = f'{f:~P}'
-                    return reformatElem(elem)
+                        
     elif isinstance(elem, P.Math) or isinstance(elem, P.RawBlock):
         # Here we have to replace part of the string. A bit more complicated
         # than before. Use gonna use m.span() to find the locations.
