@@ -59,6 +59,8 @@ def prepare_gls(doc):
 
 def finalize_gls(doc):
     glsFile = doc.get_metadata('glossaries')
+    if glsFile is None:
+        return
     if doc.format in ['latex']:
         lines =[r'\usepackage[acronym]{glossaries}'
                 , r'\loadglsentries{%s}'%glsFile]
