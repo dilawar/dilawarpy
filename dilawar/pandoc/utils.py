@@ -19,6 +19,7 @@ all_ = [ 'pandoc-imagine'
         , sdir_ / 'gls.py'  # Don't know why but this should come before cross-ref
         , 'pandoc-crossref'
         , 'pandoc-citeproc' 
+        , 'pandoc-imagine' 
         , 'pantable'
         , sdir_ / 'quantity.py'
         ]
