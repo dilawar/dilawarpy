@@ -11,6 +11,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from . import nx_utils
 from . import plot_utils
+import dilawar.matplotlib_basic_units as mpl_basic_units
 
 init_pgfplots_ = False
 
