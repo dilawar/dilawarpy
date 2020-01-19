@@ -53,9 +53,11 @@ def prepare_gls(doc):
     if doc.format in ['latex']:
         return
     if glsFile is None or not glsFile.strip():
+        _log(f"{glsFile} is not found") 
         return
-    if os.path.exists(glsFile.strip()):
-        readGlossaries(glsFile.strip())
+    glsFile = os.path.realpath(glsFile.strip())
+    if os.path.exists(glsFile):
+        readGlossaries(glsFile)
 
 def finalize_gls(doc):
     glsFile = doc.get_metadata('glossaries')
