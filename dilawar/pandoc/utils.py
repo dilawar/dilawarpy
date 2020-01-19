@@ -27,6 +27,7 @@ all_ = [ 'pandoc-imagine'
 # This is from  https://stackoverflow.com/a/377028/1805129
 def which(program):
     def is_exe(fpath):
+        path = os.path.realpath(fpath)
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
     fpath, fname = os.path.split(program)
     if fpath:
