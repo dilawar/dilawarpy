@@ -35,7 +35,7 @@ setup(
         },
     install_requires = install_requires, 
     author = "Dilawar Singh",
-    author_email = "dilawars@ncbs.res.in",
+    author_email = "dilawar.s.rajput@gmail.com",
     url = "http://github.com/dilawar/dilawar",
     license='GPLv3'
 )
