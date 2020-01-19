@@ -16,12 +16,12 @@ C.init(autoreset=True)
 sdir_ = Path(os.path.realpath(__file__)).parent
 
 all_ = [ 'pandoc-imagine'
-        , sdir_ / 'gls.py'  # Don't know why but this should come before cross-ref
+        , 'pandoc-gls.py'
         , 'pandoc-crossref'
         , 'pandoc-citeproc' 
         , 'pandoc-imagine' 
         , 'pantable'
-        , sdir_ / 'quantity.py'
+        , 'pandoc-quantity.py'
         ]
 
 # This is from  https://stackoverflow.com/a/377028/1805129

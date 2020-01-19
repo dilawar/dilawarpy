@@ -28,7 +28,7 @@ setup(
     long_description_content_type='text/markdown',
     packages = [ "dilawar", 'dilawar.pandoc' ],
     package_dir = { "dilawar" : 'dilawar' },
-    scripts=['dilawar/pandoc/gls.py', 'dilawar/pandoc/quantity.py'],
+    scripts=['dilawar/bin/pandoc-gls.py', 'dilawar/bin/pandoc-quantity.py'],
     package_data={
         # If any package contains *.txt or *.rst files, include them:
         '': ['*.tex', '*.css', 'template/*'],
