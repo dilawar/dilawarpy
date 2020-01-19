@@ -13,7 +13,7 @@ from pathlib import Path
 
 C.init(autoreset=True)
 
-sdir_ = Path(__file__).parent
+sdir_ = Path(os.path.realpath(__file__)).parent
 
 all_ = [ 'pandoc-imagine'
         , sdir_ / 'gls.py'  # Don't know why but this should come before cross-ref
@@ -27,7 +27,7 @@ all_ = [ 'pandoc-imagine'
 # This is from  https://stackoverflow.com/a/377028/1805129
 def which(program):
     def is_exe(fpath):
-        path = os.path.realpath(fpath)
+        fpath = os.path.realpath(fpath)
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
     fpath, fname = os.path.split(program)
     if fpath:
