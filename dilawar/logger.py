@@ -13,13 +13,7 @@ import sys
 import os
 import logging
 
-def init_logger( filename = '_log.txt', name='root', level = 'info'):
-    logging.basicConfig( level=logging.DEBUG,
-            format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-            datefmt='%m-%d %H:%M',
-            filename= filename,
-            filemode='a'
-            )
+def init_logger(name='dilawar', level = 'info'):
     console = logging.StreamHandler()
     console.setLevel( eval('logging.%s'%level.upper() ))
     formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
