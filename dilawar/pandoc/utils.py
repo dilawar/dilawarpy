@@ -17,10 +17,12 @@ sdir_ = Path(os.path.realpath(__file__)).parent
 
 all_ = [ 'pandoc-imagine'
         , 'pandoc-gls.py'
+        # Pantable must come before citeproc else the citation in the table
+        # will not be processed.
+        , 'pantable'  
         , 'pandoc-crossref'
         , 'pandoc-citeproc' 
         , 'pandoc-imagine' 
-        , 'pantable'
         , 'pandoc-quantity.py'
         ]
 
