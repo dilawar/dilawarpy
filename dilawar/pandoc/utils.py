@@ -58,6 +58,7 @@ def executeCommand(cmd):
             , stdout=subprocess.PIPE
             , stderr=subprocess.STDOUT
             , stdin=sys.stdin
+            # -variable
             , universal_newlines=True
             , encoding="utf-8"
             )

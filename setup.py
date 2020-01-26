@@ -16,9 +16,7 @@ print( "[INFO ] Packing %s" % version_ )
 with open("README.md") as f:
     readme = f.read()
 
-install_requires = [ 'numpy', 'matplotlib', 'pandas', 'scipy'
-        , 'tables', 'brian2', 'pint', 'panflute', 'pandocfilters'
-        , 'colorama', 'pandoc-imagine' ]
+install_requires = [ 'pint', 'panflute', 'pandocfilters', 'colorama', 'pandoc-imagine' ]
 
 setup(
     name = "dilawar",

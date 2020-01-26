@@ -7,9 +7,12 @@ import sys
 import dilawar.pandoc.utils as pu
 
 def main():
+    # 
     args = sys.argv[1:]
     if not args:
         args = [ '-h' ]
+    # Make sure to escape ".
+    #  args = [ x.replace('"', '\\"') for x in args]
     pu.execute_pandoc(args)
 
 if __name__ == '__main__':
