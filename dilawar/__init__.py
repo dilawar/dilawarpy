@@ -15,14 +15,44 @@ try:
 except ImportError:
     pass
 
-from dilawar.text_processing import *
-from dilawar.file_utils import *
-from dilawar.plot_utils import *
-from dilawar.statistics import *
-from dilawar.io_utils import *
-from dilawar.logger import *
-from dilawar.information_theory import *
-from dilawar.functions import *
+try:
+    from dilawar.text_processing import *
+except ImportError:
+    pass
+
+try:
+    from dilawar.file_utils import *
+except ImportError:
+    pass
+
+try:
+    from dilawar.plot_utils import *
+except ImportError:
+    pass
+try:
+    from  dilawar.statistics import *
+except ImportError:
+    pass
+
+try:
+    from dilawar.io_utils import *
+except ImportError:
+    pass
+
+try:
+    from dilawar.logger import *
+except ImportError:
+    pass
+
+try:
+    from dilawar.information_theory import *
+except ImportError:
+    pass
+
+try:
+    from dilawar.functions import *
+except ImportError:
+    pass
 
 try:
     import networkx as nx
