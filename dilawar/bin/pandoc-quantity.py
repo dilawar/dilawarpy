@@ -79,7 +79,7 @@ def action_quantity(elem, doc):
             if success:
                 if w_ == 'latex':
                     # If val (numeric value is None), only have unit.
-                    elem.text = f'{f:Lx}' if numval else f'{f:L}'
+                    elem.text = f'{f:Lx}' if numval else f'\({f.u:Lx}\)'
                 else:
                     elem.text = f'{f:~P}'
                     return reformatElem(elem)
@@ -97,7 +97,7 @@ def action_quantity(elem, doc):
             noMatch.append(elem.text[prevI:a])
             if w_ == 'latex':
                 # If val (numeric value is None), only have unit.
-                f = f'{f:Lx}' if numval else f'{f.u:L}'
+                f = f'{f:Lx}' if numval else f'\({f.u:Lx}\)'
             else:
                 f = f'{f:~P}'
             new.append(f)
