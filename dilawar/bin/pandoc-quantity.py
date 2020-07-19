@@ -10,17 +10,21 @@ Requires:
 """
 
 import re
+import sys
 import panflute as P
 from pint import UnitRegistry
 import itertools
 
 U_ = UnitRegistry()
 
+def _print(*args):
+    print(*args, file=sys.stderr)
+
 def searchQuantity(text):
     text = text.strip()
-    return [x for x in 
-            re.finditer(r'(\\Q|\\quantity)\{(?P<val>\S+)\s+(?P<uexpr>[^}]+)\}'
-                , text)]
+    qpat = re.compile(r'(\\Q|\\quantity)\{((?P<val>[.\-e+0-9]+)\s+)?(?P<uexpr>[^}]+)\}',
+            re.DOTALL)
+    return [x for x in qpat.finditer(text)]
 
 def reformatElem(elem, fmt='md'):
     num, unit = elem.text.split(' ', 2)
@@ -55,26 +59,27 @@ def formatQuantity(qexpr, fmt):
     ms = searchQuantity(qexpr)
     res = []
     if not ms:
-        res.append((None, qexpr, False))
+        res.append((None, qexpr, None, False))
         return res
     for m in ms:
-        val, uexpr = m.groupdict()['val'], m.groupdict()['uexpr']
+        val, uexpr = m.groupdict().get('val', None), m.groupdict()['uexpr']
         try:
-            val = U_(f'{val} {uexpr}')
-            res.append((m, val,True))
+            vval = U_(f'{val} {uexpr}') if val is not None else U_[uexpr]
+            res.append((m, vval, val, True))
         except Exception as e:
             P.debug(f'[WARN] Failed to parse {qexpr}. Error: {e}')
-            res.append((m, qexpr, False))
+            res.append((m, qexpr, None, False))
     return res
 
 def action_quantity(elem, doc):
     w_ = doc.format
     if isinstance(elem, P.RawInline):
         # Here we have simple replacement of whole string.
-        for m, f, success in formatQuantity(elem.text, w_):
+        for m, f, numval, success in formatQuantity(elem.text, w_):
             if success:
                 if w_ == 'latex':
-                    elem.text = f'{f:Lx}'
+                    # If val (numeric value is None), only have unit.
+                    elem.text = f'{f:Lx}' if numval else f'{f:L}'
                 else:
                     elem.text = f'{f:~P}'
                     return reformatElem(elem)
@@ -82,15 +87,19 @@ def action_quantity(elem, doc):
         # Here we have to replace part of the string. A bit more complicated
         # than before. Use gonna use m.span() to find the locations.
         toreplace = []
-        for m, f, success in formatQuantity(elem.text, w_):
+        for m, f, numval, success in formatQuantity(elem.text, w_):
             if success:
-                toreplace.append((m.span(), f))
+                toreplace.append((m.span(), f, numval))
 
         noMatch, new = [], []
         prevI, b = 0, 0
-        for (a, b), f in toreplace:
+        for (a, b), f, numval in toreplace:
             noMatch.append(elem.text[prevI:a])
-            f = f'{f:Lx}' if w_ == 'latex' else f'{f:~P}'
+            if w_ == 'latex':
+                # If val (numeric value is None), only have unit.
+                f = f'{f:Lx}' if numval else f'{f.u:L}'
+            else:
+                f = f'{f:~P}'
             new.append(f)
             prevI = b
         # rest of the text
