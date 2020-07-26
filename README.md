@@ -2,5 +2,6 @@
 
 # Dilawar
 
-Personal library 
-Collections of helper functions.
+Personal library.
+
+Collections of helper functions and various scripts. 
