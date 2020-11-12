@@ -9,6 +9,8 @@ __license__          = "GNU GPL"
 __maintainer__       = "Dilawar Singh"
 __email__            = "dilawars@ncbs.res.in"
 
+from dilawar.core import *
+
 try:
     # This depends on scipy
     from dilawar.data_analysis import *
