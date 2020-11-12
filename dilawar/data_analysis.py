@@ -114,7 +114,7 @@ def find_transitions( vec, levels, thres = 4 ):
 
     return result, sig
 
-def test( datafile ):
+def _test_module( datafile ):
     import matplotlib.pyplot as plt
     import pandas as pd
     data = pd.read_csv( datafile, sep = ' ', comment = '#' )
@@ -141,7 +141,7 @@ def test( datafile ):
 
 def main( ):
     datafile = sys.argv[1]
-    test(datafile)
+    _test_module(datafile)
 
 # Alias. Deprecated
 compute_transitions = find_transitions
