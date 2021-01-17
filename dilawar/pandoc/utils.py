@@ -19,10 +19,10 @@ all_ = [ 'pandoc-imagine'
         , 'pandoc-gls.py'
         # Pantable must come before citeproc else the citation in the table
         # will not be processed.
-        , 'pantable'  
-        , 'pandoc-crossref'
-        , 'pandoc-citeproc' 
-        , 'pandoc-imagine' 
+        , 'pantable'
+        #  , 'pandoc-crossref'
+        , 'pandoc-citeproc'
+        , 'pandoc-imagine'
         , 'pandoc-quantity.py'
         ]
 
@@ -96,7 +96,7 @@ def t_pandoc():
     infile = Path(__file__).parent /'..'/'..'/'README.md'
     assert infile.exists(), infile
     execute_pandoc(f'-t html5 -o a.html {infile}'.split())
-    
+
 
 def test():
     t_pandoc()
