@@ -16,7 +16,15 @@ import sys
 from subprocess import call
 from tempfile import mkdtemp
 
-from pandocfilters import toJSONFilter, Para, Image, get_filename4code, get_extension
+from pandocfilters import (
+    toJSONFilter,
+    Para,
+    Image,
+    get_filename4code,
+    get_extension,
+    get_caption,
+)
+
 
 def print1(*args):
     print(*args, file=sys.stderr)
@@ -30,13 +38,14 @@ def tikz2image(tikz_src, filetype, outfile):
     f.write(
         """\\documentclass{standalone}
              \\usepackage{tikz}
+             \\usetikzlibrary{positioning,calc,shapes,arrows,arrows.meta}
              \\begin{document}
              """
     )
     f.write(tikz_src)
     f.write("\n\\end{document}\n")
     f.close()
-    call(["pdflatex", "tikz.tex"], stdout=sys.stderr)
+    call(["lualatex", "--shell-escape", "tikz.tex"], stdout=sys.stderr)
     os.chdir(olddir)
     if filetype == "pdf":
         shutil.copyfile(tmpdir + "/tikz.pdf", outfile + ".pdf")
@@ -47,15 +56,16 @@ def tikz2image(tikz_src, filetype, outfile):
 
 def tikz(key, value, format, _):
     if key == "CodeBlock":
-        [fmt, code] = value
-        if fmt[1][0] in ["latex", "tex", "tikz"]:
+        [[ident, classes, keyvals], code] = value
+        if set(classes).intersection(set(["latex", "tex", "tikz"])):
             outfile = get_filename4code("tikz", code)
             filetype = get_extension(format, "png", html="png", latex="pdf")
             src = outfile + "." + filetype
             if not os.path.isfile(src):
                 tikz2image(code, filetype, outfile)
                 sys.stderr.write("Created image " + src + "\n")
-            return Para([Image(["", [], []], [], [src, ""])])
+            caption, typef, keyvals = get_caption(keyvals)
+            return Para([Image([ident, [], keyvals], caption, [src, typef])])
 
 
 if __name__ == "__main__":
