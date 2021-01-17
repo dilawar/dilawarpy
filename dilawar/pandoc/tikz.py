@@ -53,6 +53,18 @@ def tikz2image(tikz_src, filetype, outfile):
         call(["convert", tmpdir + "/tikz.pdf", outfile + "." + filetype])
     shutil.rmtree(tmpdir)
 
+def to_format(txt : str, fmt : str) -> str:
+    import pypandoc
+    return pypandoc.convert_text(txt, fmt, format='md')
+
+def _get_caption(item, fmt : str):
+    captions, typef, keyvals = get_caption(item)
+    for caption in captions:
+        if caption['c'] is None and caption['c']:
+            continue
+        caption['c'] = to_format(caption['c'], fmt)
+    return captions, typef, keyvals
+
 
 def tikz(key, value, format, _):
     if key == "CodeBlock":
@@ -64,7 +76,7 @@ def tikz(key, value, format, _):
             if not os.path.isfile(src):
                 tikz2image(code, filetype, outfile)
                 sys.stderr.write("Created image " + src + "\n")
-            caption, typef, keyvals = get_caption(keyvals)
+            caption, typef, keyvals = _get_caption(keyvals, format)
             return Para([Image([ident, [], keyvals], caption, [src, typef])])
 
 
