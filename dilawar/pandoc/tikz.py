@@ -10,7 +10,7 @@ CREDIT: Did I write this? Or downloaded it from somewhere? Oh the mystery.
 """
 
 import os
-import re
+import subprocess
 import shutil
 import sys
 from subprocess import call
@@ -54,15 +54,18 @@ def tikz2image(tikz_src, filetype, outfile):
     shutil.rmtree(tmpdir)
 
 def to_format(txt : str, fmt : str) -> str:
-    import pypandoc
-    return pypandoc.convert_text(txt, fmt, format='md')
+    cmd = f"pandoc -t {fmt}"
+    s = subprocess.check_output(cmd.split(" "), input=txt, encoding='utf8')
+    assert s, s
+    return s
 
 def _get_caption(item, fmt : str):
     captions, typef, keyvals = get_caption(item)
-    for caption in captions:
-        if caption['c'] is None and caption['c']:
-            continue
-        caption['c'] = to_format(caption['c'], fmt)
+    #for caption in captions:
+    #    if caption['c'] is None and caption['c']:
+    #        continue
+    #    caption['c'] = to_format(caption['c'], fmt)
+    #    print1(caption)
     return captions, typef, keyvals
 
 
@@ -78,7 +81,6 @@ def tikz(key, value, format, _):
                 sys.stderr.write("Created image " + src + "\n")
             caption, typef, keyvals = _get_caption(keyvals, format)
             return Para([Image([ident, [], keyvals], caption, [src, typef])])
-
 
 if __name__ == "__main__":
     toJSONFilter(tikz)

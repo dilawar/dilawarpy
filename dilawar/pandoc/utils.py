@@ -53,7 +53,7 @@ def _prefix(msg):
     return f"{C.Fore.BLUE}dilawar.pandoc>{C.Style.RESET_ALL}{msg.strip()}"
 
 def executeCommand(cmd):
-    print(_prefix(f"Executing {cmd}"), file=sys.stderr)
+    print(_prefix(f"Executing {cmd} in {os.getcwd()}"), file=sys.stderr)
     cmd = cmd.split()
     p = subprocess.Popen(cmd
             , stdout=subprocess.PIPE
