@@ -2,10 +2,16 @@ __author__ = "Dilawar Singh"
 __email__ = "dilawar.s.rajput@gmail.com"
 
 import math
+import pickle
+from pathlib import Path
+import typing as T
+import functools
 
-def argmax(ls : list) -> int:
-    """argmax: Returns the index i such that max(ls) == ls[i]
-    """
+from dilawar.logger import logger
+
+
+def argmax(ls: list) -> int:
+    """argmax: Returns the index i such that max(ls) == ls[i]"""
     _m, _mi = -math.inf, 0
     for i, v in enumerate(ls):
         if v > _m:
@@ -14,7 +20,70 @@ def argmax(ls : list) -> int:
     return _mi
 
 
+def write_pickle(pklfile: Path, obj: T.Any):
+    """Write pickle.
+
+    Parameters
+    ----------
+    pklfile : Path
+        pklfile
+    obj : T.Any
+        obj
+    """
+    with pklfile.open("wb") as f:
+        pickle.dump(f, obj)
+
+def load_pickle(pklfile: Path):
+    """Write pickle.
+
+    Parameters
+    ----------
+    pklfile : Path
+        pklfile
+    obj : T.Any
+        obj
+    """
+    with pklfile.open("rb") as f:
+        return pickle.load(f)
+
+
+def run_if_not_pickled(pklfile: T.Union[str, Path]):
+    def inner_decorator(func):
+        @functools.wraps(func)
+        def __inner(*args, **kwargs):
+            p = Path(pklfile).resolve()
+            if p.exists():
+                return load_pickle(p)
+
+            x = func(*args, **kwargs)
+            with p.open("wb") as f:
+                p.dump(x, f)
+            return x
+
+        return __inner
+
+    return inner_decorator
+
+
 def test_argmax():
     import random
-    a = [ random.randint(-1000, 1000) for x in range(1000)]
+
+    a = [random.randint(-1000, 1000) for x in range(1000)]
     assert max(a) == a[argmax(a)]
+
+
+@run_if_not_pickled("a.pickle")
+def test_func_pickle():
+    import numpy as np
+
+    d = np.random.randint(0, 1000, 1000)
+    return d
+
+
+def main():
+    a = test_func_pickle()
+    print(a.shape)
+
+
+if __name__ == "__main__":
+    main()
