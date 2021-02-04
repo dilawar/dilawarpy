@@ -53,11 +53,15 @@ def run_if_not_pickled(pklfile: T.Union[str, Path]):
         def __inner(*args, **kwargs):
             p = Path(pklfile).resolve()
             if p.exists():
-                return load_pickle(p)
+                try:
+                    return load_pickle(p)
+                except Exception as e:
+                    logger.warning(f'Failed to load {p}/{e}')
+                    p.unlink()
 
             x = func(*args, **kwargs)
             with p.open("wb") as f:
-                p.dump(x, f)
+                pickle.dump(x, f)
             return x
 
         return __inner
