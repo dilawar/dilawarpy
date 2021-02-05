@@ -68,6 +68,9 @@ def run_if_not_pickled(pklfile: T.Union[str, Path]):
 
     return inner_decorator
 
+def flatten(listoflist : T.List[T.List[T.Any]]) -> T.List[T.Any]:
+    import operator
+    return functools.reduce(operator.iconcat, listoflist, [])
 
 def test_argmax():
     import random
@@ -83,10 +86,19 @@ def test_func_pickle():
     d = np.random.randint(0, 1000, 1000)
     return d
 
+def test_flatten():
+    a = [[1,1,1], [2], [[3], [-1]]]
+    x = flatten(a)
+    assert x == [1, 1, 1, 2, [3], [-1]]
+    a = [[1], [2], [3]]
+    x = flatten(a)
+    assert x == [1, 2, 3]
+
 
 def main():
     a = test_func_pickle()
     print(a.shape)
+    test_flatten()
 
 
 if __name__ == "__main__":
