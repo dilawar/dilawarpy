@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "dilawar"
+version = "0.8.0"
+description = "Personal collection of utilities"
+authors = ["Dilawar Singh <dilawar.s.rajput@gmail.com>"]
+license = "GPLv3"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+numpy = "^1.20.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+python_files = '*.py'
+addopts = "-ra -q"
+testpaths = [ "dilawar"]
