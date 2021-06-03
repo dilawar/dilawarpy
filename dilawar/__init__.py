@@ -2,12 +2,12 @@
 
 """
 from __future__ import print_function, division, absolute_import
-    
-__author__           = "Dilawar Singh"
-__copyright__        = "Copyright 2016, Dilawar Singh"
-__license__          = "GNU GPL"
-__maintainer__       = "Dilawar Singh"
-__email__            = "dilawars@ncbs.res.in"
+
+__author__ = "Dilawar Singh"
+__copyright__ = "Copyright 2016, Dilawar Singh"
+__license__ = "GNU GPL"
+__maintainer__ = "Dilawar Singh"
+__email__ = "dilawars@ncbs.res.in"
 
 from dilawar.core import *
 
@@ -32,7 +32,7 @@ try:
 except ImportError:
     pass
 try:
-    from  dilawar.statistics import *
+    from dilawar.statistics import *
 except ImportError:
     pass
 
@@ -62,4 +62,4 @@ try:
 except Exception as e:
     pass
 
-# NOTE: brian2 should not be imported by default. 
+# NOTE: brian2 should not be imported by default.

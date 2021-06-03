@@ -53,15 +53,17 @@ def tikz2image(tikz_src, filetype, outfile):
         call(["convert", tmpdir + "/tikz.pdf", outfile + "." + filetype])
     shutil.rmtree(tmpdir)
 
-def to_format(txt : str, fmt : str) -> str:
+
+def to_format(txt: str, fmt: str) -> str:
     cmd = f"pandoc -t {fmt}"
-    s = subprocess.check_output(cmd.split(" "), input=txt, encoding='utf8')
+    s = subprocess.check_output(cmd.split(" "), input=txt, encoding="utf8")
     assert s, s
     return s
 
-def _get_caption(item, fmt : str):
+
+def _get_caption(item, fmt: str):
     captions, typef, keyvals = get_caption(item)
-    #for caption in captions:
+    # for caption in captions:
     #    if caption['c'] is None and caption['c']:
     #        continue
     #    caption['c'] = to_format(caption['c'], fmt)
@@ -81,6 +83,7 @@ def tikz(key, value, format, _):
                 sys.stderr.write("Created image " + src + "\n")
             caption, typef, keyvals = _get_caption(keyvals, format)
             return Para([Image([ident, [], keyvals], caption, [src, typef])])
+
 
 if __name__ == "__main__":
     toJSONFilter(tikz)
