@@ -96,6 +96,5 @@ def action_gls(elem, doc):
 def main(doc=None):
     P.run_filter(action_gls, prepare=prepare_gls, finalize=finalize_gls, doc=doc)
 
-
 if __name__ == "__main__":
     main()

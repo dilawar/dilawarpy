@@ -35,3 +35,6 @@ build-backend = "poetry.core.masonry.api"
 python_files = '*.py'
 addopts = "-s"
 testpaths = [ "dilawar"]
+
+[tool.poetry.scripts]
+pandoc-gls = 'dilawar:bin:pandoc-gls:main'
