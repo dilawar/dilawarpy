@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dilawar"
-version = "0.9.0"
+version = "0.9.1"
 description = "Personal collection of utilities"
 authors = ["Dilawar Singh <dilawar.s.rajput@gmail.com>"]
 license = "GPLv3"
@@ -37,4 +37,4 @@ addopts = "-s"
 testpaths = [ "dilawar"]
 
 [tool.poetry.scripts]
-pandoc-gls = 'dilawar:bin:pandoc-gls:main'
+pandoc-gls = "dilawar.bin.gls:main"

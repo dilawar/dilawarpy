@@ -17,7 +17,7 @@ sdir_ = Path(os.path.realpath(__file__)).parent
 
 all_ = [
     "pandoc-imagine",
-    (sdir_ / ".." / "bin" / "pandoc-gls.py"),
+    "pandoc-gls",
     (sdir_ / "tikz.py").resolve()
     # Pantable must come before citeproc else the citation in the table
     # will not be processed.
