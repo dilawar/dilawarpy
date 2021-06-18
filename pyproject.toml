@@ -38,3 +38,4 @@ testpaths = [ "dilawar"]
 
 [tool.poetry.scripts]
 pandoc-gls = "dilawar.bin.gls:main"
+pandoc-quantity = "dilawar.bin.quantity:main"
