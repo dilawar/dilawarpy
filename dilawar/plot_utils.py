@@ -2,7 +2,6 @@
 
 import os
 import time
-import shutil as sh
 import numpy as np
 import subprocess
 import re
@@ -11,9 +10,11 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from . import nx_utils
 from . import plot_utils
-import dilawar.matplotlib_basic_units as mpl_basic_units
 
-from typing import Optional
+from typing import Optional, Union, List
+from pathlib import Path
+
+from loguru import logger
 
 init_pgfplots_ = False
 
@@ -126,13 +127,16 @@ def nx_draw(graph, ax=None, edge_labels: Optional[str] = None, **kwargs):
     # requires graphviz development libraries.
     try:
         from networkx.drawing.nx_agraph import graphviz_layout
-    except ImportError as e:
+    except ImportError:
         from networkx.drawing.nx_pydot import graphviz_layout
     if ax is None:
         ax = plt.gca()
 
+    pos = None
     if kwargs.get("pos", None) is None:
-        pos = graphviz_layout(graph, prog=kwargs.get("program", "neato"))
+        prog = kwargs.get("program", "neato")
+        pos = graphviz_layout(graph, prog=prog)
+        del kwargs["program"]
     else:
         pos = kwargs["pos"]
 
@@ -155,6 +159,31 @@ def nx_draw(graph, ax=None, edge_labels: Optional[str] = None, **kwargs):
         nx.draw_networkx_edge_labels(graph, pos, edge_labels=elDict)
 
     return pos
+
+
+def nx_draw_graphviz(
+    graph, outfile: Union[Path, str], prg: str = "dot", prg_extra: str = ""
+):
+    """Draw using graphviz"""
+    suffix = Path(outfile).suffix
+    ext = suffix[1:]  # remove leading .
+
+    # pydot is pure python and easy to install. PyGraphviz Agraph interface
+    # requires graphviz development libraries.
+    from networkx.drawing.nx_pydot import write_dot
+
+    _, dotfile = tempfile.mkstemp()
+    write_dot(graph, dotfile)
+
+    cmd = [prg]
+    prgextra: List[str] = prg_extra.split(" ")
+    if len(prgextra) > 0:
+        cmd += prgextra
+    cmd += [f"-T{ext}", dotfile, "-o", f"{outfile}"]
+    try:
+        subprocess.run(cmd, check=True)
+    except Exception as e:
+        logger.warning('Failed to run {" ".join(cmd)}.\nError was {e}.')
 
 
 def nx_draw_subprocess(graph, program="neato", ax=None):
@@ -302,7 +331,7 @@ def pgfplots(df, xname, yname, ax, **kwargs):
         df[yname]
         #  , kwargs.get('plot_style', '-')
         ,
-        **kwargs.get("Line2D", {})
+        **kwargs.get("Line2D", {}),
     )
 
     defaultLegendOptions = dict(
@@ -360,7 +389,7 @@ def addLabel(label, ax, **kwargs):
     ax.text(x, y, label, transform=ax.transAxes)
 
 
-def mid(x: np.array):
+def mid(x):
     """Find midpoint of given array.
     Useful to find midpoint of bins returned by np.histogram function.
     """

@@ -17,6 +17,7 @@ matplotlib = "^3.4.2"
 networkx = {version = "^2.5.1", optional = true}
 pydot = {version = "^1.4.2", extras = ["graph"]}
 pygraphviz = {version = "^1.7", extras = ["graph"]}
+loguru = "^0.5.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
