@@ -2,6 +2,10 @@
 
 # Dilawar
 
-Personal library.
+A Python library for personal use. It contains helper functions and various scripts which I often use. 
 
-Collections of helper functions and various scripts. 
+
+## Install
+
+`pip3 install dilawar`
+
